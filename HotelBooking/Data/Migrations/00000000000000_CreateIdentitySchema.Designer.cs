@@ -9,7 +9,7 @@ using System;
 
 namespace HotelBooking.Data.Migrations
 {
-    [DbContext(typeof(HotelBookingDbContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("00000000000000_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {
