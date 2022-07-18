@@ -1,4 +1,4 @@
-using HotelBooking.Data;
+using HotelBooking.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
