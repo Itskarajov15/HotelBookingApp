@@ -23,6 +23,8 @@ namespace HotelBooking.Infrastructure.Data.Models
 
         public double Rating { get; set; }
 
+        public string PrimaryImageUrl { get; set; }
+
         public int CityId { get; set; }
 
         public City City { get; set; }
