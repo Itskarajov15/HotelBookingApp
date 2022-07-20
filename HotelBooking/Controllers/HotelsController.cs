@@ -1,4 +1,4 @@
-﻿using HotelBooking.Core.Models;
+﻿using HotelBooking.Core.Contracts;
 using HotelBooking.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,25 +6,18 @@ namespace HotelBooking.Controllers
 {
     public class HotelsController : Controller
     {
-        private readonly ApplicationDbContext data;
+        private readonly IHotelService service;
 
-        public HotelsController(ApplicationDbContext data)
+        public HotelsController(IHotelService service)
         {
-            this.data = data;
+            this.service = service;
         }
 
-        //public IActionResult All()
-        //{
-        //    var result = this.data.
-        //                     .Select(h => new HotelCardViewModel
-        //                     {
-        //                         Id = h.Id,
-        //                         HotelName = h.HotelName,
-        //                         PrimaryImageUrl = h.PrimaryImageUrl
-        //                     })
-        //                     .ToList();
+        public IActionResult All()
+        {
+            var hotels = service.GetAllHotels();
 
-        //    return this.View(result);
-        //}
+            return this.View(hotels);
+        }
     }
 }
