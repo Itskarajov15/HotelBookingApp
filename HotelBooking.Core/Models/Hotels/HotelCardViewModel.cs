@@ -1,4 +1,4 @@
-﻿namespace HotelBooking.Core.Models
+﻿namespace HotelBooking.Core.Models.Hotels
 {
     public class HotelCardViewModel
     {

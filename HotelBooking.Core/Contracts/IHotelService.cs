@@ -1,4 +1,4 @@
-﻿using HotelBooking.Core.Models;
+﻿using HotelBooking.Core.Models.Hotels;
 
 namespace HotelBooking.Core.Contracts
 {

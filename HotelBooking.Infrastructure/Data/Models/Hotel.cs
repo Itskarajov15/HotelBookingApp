@@ -21,17 +21,11 @@ namespace HotelBooking.Infrastructure.Data.Models
         [Required]
         public string Description { get; set; }
 
-        public double Rating { get; set; }
-
         public string PrimaryImageUrl { get; set; }
 
         public int CityId { get; set; }
 
         public City City { get; set; }
-
-        public int CategoryId { get; set; }
-
-        public Category Category { get; set; }
 
         public ICollection<HotelImage> HotelImages { get; set; }
 

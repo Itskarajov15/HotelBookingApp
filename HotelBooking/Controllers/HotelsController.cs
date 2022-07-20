@@ -1,5 +1,4 @@
 ﻿using HotelBooking.Core.Contracts;
-using HotelBooking.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelBooking.Controllers
@@ -18,6 +17,11 @@ namespace HotelBooking.Controllers
             var hotels = service.GetAllHotels();
 
             return this.View(hotels);
+        }
+
+        public IActionResult Add()
+        {
+            return this.View();
         }
     }
 }

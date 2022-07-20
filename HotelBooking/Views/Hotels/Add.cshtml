@@ -1,0 +1,28 @@
+﻿@model AddHotelViewModel
+
+@{
+    ViewData["Title"] = "Add Hotel";
+}
+
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="HotelName" class="form-label"></label>
+        <input asp-for="HotelName" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+    <div class="mb-3">
+        <label asp-for="PrimaryImageUrl" class="form-label"></label>
+        <input asp-for="PrimaryImageUrl" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label asp-for="FirstAdditionalImageUrl" class="form-label"></label>
+        <input asp-for="FirstAdditionalImageUrl" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label asp-for="SecondAdditionalImageUrl" class="form-label"></label>
+        <input asp-for="SecondAdditionalImageUrl" class="form-control">
+    </div>
+</form>

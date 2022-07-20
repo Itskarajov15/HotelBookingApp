@@ -1,5 +1,5 @@
 ﻿using HotelBooking.Core.Contracts;
-using HotelBooking.Core.Models;
+using HotelBooking.Core.Models.Hotels;
 using HotelBooking.Infrastructure.Data;
 
 namespace HotelBooking.Core.Services
