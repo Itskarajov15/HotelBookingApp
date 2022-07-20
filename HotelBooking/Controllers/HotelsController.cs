@@ -13,18 +13,18 @@ namespace HotelBooking.Controllers
             this.data = data;
         }
 
-        public IActionResult All()
-        {
-            var result = this.data.
-                             .Select(h => new HotelCardViewModel
-                             {
-                                 Id = h.Id,
-                                 HotelName = h.HotelName,
-                                 PrimaryImageUrl = h.PrimaryImageUrl
-                             })
-                             .ToList();
+        //public IActionResult All()
+        //{
+        //    var result = this.data.
+        //                     .Select(h => new HotelCardViewModel
+        //                     {
+        //                         Id = h.Id,
+        //                         HotelName = h.HotelName,
+        //                         PrimaryImageUrl = h.PrimaryImageUrl
+        //                     })
+        //                     .ToList();
 
-            return this.View(result);
-        }
+        //    return this.View(result);
+        //}
     }
 }
