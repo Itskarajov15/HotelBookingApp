@@ -28,8 +28,6 @@ namespace HotelBooking.Controllers
         [HttpPost]
         public IActionResult Add(AddHotelViewModel hotel)
         {
-            hotel.Cities = this.service.GetCityNames();
-
             if (!this.service.IsCityValid(hotel.CityId))
             {
                 ModelState.AddModelError(nameof(hotel.CityId), "City does not exist");
@@ -37,6 +35,7 @@ namespace HotelBooking.Controllers
 
             if (!ModelState.IsValid)
             {
+                hotel.Cities = this.service.GetCityNames();
                 return this.View(hotel);
             }
 
@@ -47,7 +46,7 @@ namespace HotelBooking.Controllers
                 return this.View(hotel);
             }
 
-            return RedirectToAction("Hotels", "All");
+            return RedirectToAction("All", "Hotels");
         }
     }
 }

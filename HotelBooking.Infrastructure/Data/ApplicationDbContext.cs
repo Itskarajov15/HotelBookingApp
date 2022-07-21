@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace HotelBooking.Infrastructure.Data
+namespace HotelBooking.Infrastructure.Data  
 {
     public class ApplicationDbContext : IdentityDbContext
     {

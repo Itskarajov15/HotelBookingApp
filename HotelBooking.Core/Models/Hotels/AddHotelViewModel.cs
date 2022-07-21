@@ -17,19 +17,22 @@ namespace HotelBooking.Core.Models.Hotels
 
         [Display(Name = "Primary Hotel Image")]
         [Required]
+        [Url]
         public string PrimaryImageUrl { get; set; }
 
         [Display(Name = "First Additional Hotel Image")]
         [Required]
+        [Url]
         public string FirstAdditionalImageUrl { get; set; }
 
         [Display(Name = "Second Additional Hotel Image")]
         [Required]
+        [Url]
         public string SecondAdditionalImageUrl { get; set; }
 
         [Display(Name = "City")]
         public int CityId { get; set; }
 
-        public IEnumerable<HotelCityViewModel> Cities { get; set; }
+        public IEnumerable<HotelCityViewModel>? Cities { get; set; }
     }
 }

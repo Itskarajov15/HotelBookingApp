@@ -2,8 +2,8 @@
 {
     public class HotelCityViewModel
     {
-        public int Id { get; set; }
+        public int Id { get; init; }
 
-        public string CityName { get; set; }
+        public string Name { get; init; }
     }
 }

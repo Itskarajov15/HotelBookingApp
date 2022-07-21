@@ -70,7 +70,7 @@ namespace HotelBooking.Core.Services
                    .Select(c => new HotelCityViewModel
                    {
                        Id = c.Id,
-                       CityName = c.CityName
+                       Name = c.CityName
                    })
                    .ToList();
 
