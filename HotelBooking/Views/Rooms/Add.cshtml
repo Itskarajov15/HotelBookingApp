@@ -1,0 +1,50 @@
+﻿@model AddRoomViewModel
+
+@{
+    ViewData["Title"] = "Add Room";
+}
+
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-lg-3 col-xl-6">
+        <h2 class="heading-margin text-center">Add Room</h2>
+
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="RoomTypeId"></label>
+                <select asp-for="RoomTypeId" class="form-control">
+                    @foreach (var roomType in Model.RoomTypes)
+                    {
+                        <option value="@roomType.Id">@roomType.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label"></label>
+                <textarea asp-for="Description" rows="4" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="small text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="FirstRoomImageUrl" class="form-label"></label>
+                <input asp-for="FirstRoomImageUrl" class="form-control" />
+                <span asp-validation-for="FirstRoomImageUrl" class="small text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="SecondRoomImageUrl" class="form-label"></label>
+                <input asp-for="SecondRoomImageUrl" class="form-control" />
+                <span asp-validation-for="SecondRoomImageUrl" class="small text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="ThirdRoomImageUrl" class="form-label"></label>
+                <input asp-for="ThirdRoomImageUrl" class="form-control" />
+                <span asp-validation-for="ThirdRoomImageUrl" class="small text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="PriceForOneNight" class="form-label"></label>
+                <input asp-for="PriceForOneNight" rows="4" class="form-control" />
+                <span asp-validation-for="PriceForOneNight" class="small text-danger"></span>
+            </div>
+
+            <input class="btn btn-primary" type="submit" value="Save" />
+        </form>
+    </div>
+</div>

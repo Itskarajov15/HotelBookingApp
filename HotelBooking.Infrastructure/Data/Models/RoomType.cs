@@ -11,5 +11,11 @@ namespace HotelBooking.Infrastructure.Data.Models
         [Required]
         [MaxLength(RoomTypeMaxLength)]
         public string TypeName { get; set; }
+
+        [Required]
+        [MaxLength(RoomTypeDescriptionMaxLength)]
+        public string Description { get; set; }
+
+        public int CountOfPeople { get; set; }
     }
 }

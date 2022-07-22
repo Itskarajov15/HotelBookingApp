@@ -14,5 +14,6 @@
         public const int EmailMaxLength = 60;
         public const int LastNameMaxLength = 40;
         public const int PhoneNumberMaxLength = 10;
+        public const int RoomTypeDescriptionMaxLength = 100;
     }
 }
