@@ -11,5 +11,7 @@ namespace HotelBooking.Core.Contracts
         bool IsCityValid(int cityId);
 
         bool AddHotel(AddHotelViewModel hotel);
+
+        HotelViewModel GetHotel(int id);
     }
 }

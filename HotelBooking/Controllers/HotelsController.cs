@@ -48,5 +48,17 @@ namespace HotelBooking.Controllers
 
             return RedirectToAction("All", "Hotels");
         }
+
+        public IActionResult Details(int id)
+        {
+            var hotel = service.GetHotel(id);
+
+            if (hotel == null)
+            {
+                return RedirectToAction("All", "Hotels");
+            }
+
+            return this.View(hotel);
+        }
     }
 }

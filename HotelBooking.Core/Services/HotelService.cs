@@ -54,6 +54,21 @@ namespace HotelBooking.Core.Services
             return isAdded;
         }
 
+        public HotelViewModel GetHotel(int hotelId)
+            =>  this.context
+                    .Hotels
+                    .Where(h => h.Id == hotelId)
+                    .Select(h => new HotelViewModel()
+                    {
+                        HotelName = h.HotelName,
+                        CityName = h.City.CityName,
+                        CountryName = h.City.Country.CountryName,
+                        Description = h.Description,
+                        HotelImages = h.HotelImages.Select(h => h.ImageUrl).ToList(),
+                        PrimaryImageUrl = h.PrimaryImageUrl
+                    })
+                    .FirstOrDefault();
+
         public IEnumerable<HotelCardViewModel> GetAllHotels()
             => this.context.Hotels
                         .Select(h => new HotelCardViewModel
