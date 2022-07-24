@@ -13,10 +13,32 @@ namespace HotelBooking.Controllers
             this.service = service;
         }
 
-        public IActionResult Add(int hotelId) => this.View(new AddRoomViewModel
+        public IActionResult Add() => this.View(new AddRoomViewModel
         {
-            HotelId = hotelId,
             RoomTypes = this.service.GetRoomTypes()
         });
+
+        [HttpPost]
+        public IActionResult Add(int id, AddRoomViewModel roomModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                roomModel.RoomTypes = this.service.GetRoomTypes();
+                return this.View(roomModel);
+            }
+
+            roomModel.HotelId = id;
+
+            var isAdded = this.service.AddRoom(roomModel);
+
+            if (!isAdded)
+            {
+                ModelState.AddModelError(string.Empty, "Something went wrong");
+                roomModel.RoomTypes = this.service.GetRoomTypes();
+                return this.View(roomModel);
+            }
+
+            return RedirectToAction("Details", "Hotels", new { id = id });
+        }
     }
 }

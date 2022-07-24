@@ -60,6 +60,7 @@ namespace HotelBooking.Core.Services
                     .Where(h => h.Id == hotelId)
                     .Select(h => new HotelViewModel()
                     {
+                        Id = h.Id,
                         HotelName = h.HotelName,
                         CityName = h.City.CityName,
                         CountryName = h.City.Country.CountryName,

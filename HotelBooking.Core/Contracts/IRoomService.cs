@@ -4,8 +4,10 @@ namespace HotelBooking.Core.Contracts
 {
     public interface IRoomService
     {
-        bool Add(AddRoomViewModel room);
+        bool AddRoom(AddRoomViewModel room);
 
         IEnumerable<RoomTypeViewModel> GetRoomTypes();
+
+        IEnumerable<RoomViewModel> GetAllRooms();
     }
 }

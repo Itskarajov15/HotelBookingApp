@@ -4,24 +4,66 @@
     ViewData["Title"] = Model.HotelName;
 }
 
-<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img src="@Model.PrimaryImageUrl" class="d-block w-100" alt="Hotel image">
+<div class="container">
+    <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2" class="active" aria-current="true"></button>
+            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3" class=""></button>
         </div>
-        <div class="carousel-item">
-            <img src="@Model.HotelImages[0]" class="d-block w-100" alt="Hotel image">
+        <div class="carousel-inner">
+            <div class="carousel-item">
+                <img src="@Model.PrimaryImageUrl" class="d-block w-100" alt="Hotel image">
+                <div class="container">
+                    <div class="carousel-caption text-start">
+                        <h1>@Model.HotelName</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item active">
+                <div class="container">
+                    <img src="@Model.HotelImages[0]" class="d-block w-100" alt="Hotel image">
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="container">
+                    <img src="@Model.HotelImages[1]" class="d-block w-100" alt="Hotel image">
+                </div>
+            </div>
         </div>
-        <div class="carousel-item">
-            <img src="@Model.HotelImages[1]" class="d-block w-100" alt="Hotel image">
+        <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+
+<div class="container description-jumbotron">
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4 text-center">Description</h1>
+            <p class="lead">@Model.Description</p>
         </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
+</div>
+
+@{
+    foreach (var room in ViewBag.Rooms)
+    {
+        <div class="card mb-3">
+            <img src="@room.RoomImageUrl" class="card-img-top" alt="Room image">
+            <div class="card-body">
+                <h5 class="card-title">@room.RoomType room</h5>
+                <p class="card-text">@room.RoomDescription</p>
+            </div>
+        </div>
+    }
+}
+
+<div>
+    <a asp-controller="Rooms" asp-action="Add" asp-route-id="@Model.Id" button type="button" class="btn btn-secondary btn-lg btn-block">Add Room</a>
 </div>

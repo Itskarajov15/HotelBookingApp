@@ -26,9 +26,9 @@ namespace HotelBooking.Core.Models.Rooms
         [Url]
         public string ThirdRoomImageUrl { get; set; }
 
-        public int HotelId { get; set; }
-
         public int RoomTypeId { get; set; }
+
+        public int HotelId { get; set; }
 
         public IEnumerable<RoomTypeViewModel>? RoomTypes { get; set; }
     }
