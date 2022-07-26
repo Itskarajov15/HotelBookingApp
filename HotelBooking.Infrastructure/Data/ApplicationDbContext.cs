@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace HotelBooking.Infrastructure.Data  
+namespace HotelBooking.Infrastructure.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
@@ -28,5 +28,14 @@ namespace HotelBooking.Infrastructure.Data
         public DbSet<Client> Clients { get; set; }
 
         public DbSet<Reservation> Reservations { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Room>()
+                   .Property(r => r.IsReserved)
+                   .HasDefaultValue(false);
+
+            base.OnModelCreating(builder);
+        }
     }
 }

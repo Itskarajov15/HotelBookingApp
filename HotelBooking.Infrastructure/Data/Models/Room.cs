@@ -18,6 +18,8 @@ namespace HotelBooking.Infrastructure.Data.Models
         [Column(TypeName = "decimal(18,2)")]
         public decimal PriceForOneNight { get; set; }
 
+        public bool IsReserved { get; set; }
+
         public int HotelId { get; set; }
 
         public Hotel Hotel { get; set; }
