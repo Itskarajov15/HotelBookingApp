@@ -44,16 +44,35 @@ namespace HotelBooking.Core.Services
             return isAdded;
         }
 
-        public IEnumerable<RoomViewModel> GetAllRooms()
+        public IEnumerable<RoomCardViewModel> GetAllRoomsByHotel(int hotelId)
             => this.context
                    .Rooms
-                   .Select(r => new RoomViewModel()
+                   .Where(r => r.HotelId == hotelId)
+                   .Select(r => new RoomCardViewModel()
                    {
+                       Id = r.Id,
                        RoomType = r.RoomType.TypeName,
                        RoomDescription = r.Description,
                        RoomImageUrl = r.RoomImages.Select(i => i.ImageUrl).FirstOrDefault()
                    })
+                   .ToList()
+                   .DistinctBy(r => r.RoomType)
                    .ToList();
+
+        public RoomViewModel GetRoom(int roomId)
+            => this.context
+                   .Rooms
+                   .Where(r => r.Id == roomId)
+                   .Select(r => new RoomViewModel()
+                   {
+                       Id = r.Id,
+                       Description = r.Description,
+                       HotelName = r.Hotel.HotelName,
+                       PriceForOneNight = r.PriceForOneNight,
+                       RoomImageUrls = r.RoomImages.Select(i => i.ImageUrl).ToList(),
+                       TypeName = r.RoomType.TypeName
+                   })
+                   .FirstOrDefault();
 
         public IEnumerable<RoomTypeViewModel> GetRoomTypes()
             => this.context

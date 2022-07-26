@@ -60,7 +60,7 @@ namespace HotelBooking.Controllers
                 return RedirectToAction("All", "Hotels");
             }
 
-            this.ViewBag.Rooms = this.roomService.GetAllRooms();
+            this.ViewBag.Rooms = this.roomService.GetAllRoomsByHotel(id);
 
             return this.View(hotel);
         }

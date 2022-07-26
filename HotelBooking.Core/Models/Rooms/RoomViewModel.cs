@@ -2,10 +2,16 @@
 {
     public class RoomViewModel
     {
-        public string RoomType { get; set; }
+        public int Id { get; set; }
 
-        public string RoomDescription { get; set; }
+        public string TypeName { get; set; }
 
-        public string RoomImageUrl { get; set; }
+        public List<string> RoomImageUrls { get; set; }
+
+        public string Description { get; set; }
+
+        public string HotelName { get; set; }
+
+        public decimal PriceForOneNight { get; set; }
     }
 }

@@ -40,5 +40,17 @@ namespace HotelBooking.Controllers
 
             return RedirectToAction("Details", "Hotels", new { id = id });
         }
+
+        public IActionResult Details(int id)
+        {
+            var room = this.service.GetRoom(id);
+
+            if (room == null)
+            {
+                RedirectToAction("All", "Hotels");
+            }
+
+            return this.View(room);
+        }
     }
 }
