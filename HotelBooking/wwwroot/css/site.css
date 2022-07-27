@@ -42,3 +42,10 @@ body {
     margin-top: 40px;
     margin-bottom: 40px;
 }
+
+.select-div {
+    text-align: center;
+    display: block;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}

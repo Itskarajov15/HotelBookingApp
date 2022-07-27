@@ -14,6 +14,35 @@ namespace HotelBooking.Core.Services
             this.context = context;
         }
 
+        public bool ReserveRoom(ReserveRoomViewModel model)
+        {
+            var roomType = GetRoomTypeByRoomId(model.RoomId);
+
+            if (IsRoomReserved(model.StartDate, model.EndDate, model.RoomId, roomType))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private string GetRoomTypeByRoomId(int roomId)
+            => this.context
+                .Rooms
+                .Where(r => r.Id == roomId)
+                .Select(r => r.RoomType.TypeName)
+                .FirstOrDefault();
+
+        private bool IsRoomReserved(DateTime startDate, DateTime endDate, int roomId, string typeName)
+        {
+            bool isReserved = this.context
+                                  .Reservations
+                                  .Where(r => r.Room.RoomType.TypeName == typeName)
+                                  .Any(r => (r.StartDate < startDate && r.EndDate < startDate) || (r.StartDate > r.EndDate && r.EndDate > endDate));
+
+            return isReserved;
+        }
+
         public bool AddRoom(AddRoomViewModel room)
         {
             bool isAdded = false;

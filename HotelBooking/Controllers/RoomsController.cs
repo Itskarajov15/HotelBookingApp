@@ -54,5 +54,25 @@ namespace HotelBooking.Controllers
 
             return this.View(room);
         }
+
+        public IActionResult Reserve()
+        {
+            return this.View();
+        }
+
+        [HttpPost]
+        public IActionResult Reserve(int id, ReserveRoomViewModel reserveRoom)
+        {
+            reserveRoom.RoomId = id;
+
+            if (!ModelState.IsValid)
+            {
+                return this.View();
+            }
+
+            var isReserved = this.service.ReserveRoom(reserveRoom);
+
+            return this.RedirectToAction("All", "Hotels");
+        }
     }
 }

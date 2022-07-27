@@ -11,5 +11,7 @@ namespace HotelBooking.Core.Contracts
         IEnumerable<RoomCardViewModel> GetAllRoomsByHotel(int hotelId);
 
         RoomViewModel GetRoom(int roomId);
+
+        bool ReserveRoom(ReserveRoomViewModel model);
     }
 }
