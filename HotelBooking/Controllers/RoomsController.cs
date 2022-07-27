@@ -1,9 +1,11 @@
 ﻿using HotelBooking.Core.Contracts;
 using HotelBooking.Core.Models.Rooms;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelBooking.Controllers
 {
+    [Authorize]
     public class RoomsController : Controller
     {
         private readonly IRoomService service;
