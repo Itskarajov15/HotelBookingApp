@@ -27,7 +27,7 @@
                 <span asp-validation-for="CountOfPeople" class="small text-danger"></span>
             </div>
 
-            <input class="btn btn-primary" type="submit" value="Reserve" />
+            <input class="btn btn-primary" type="submit" onclick="return confirm('Are you sure you want to reserve the room?');" value="Reserve" />
         </form>
     </div>
 </div>

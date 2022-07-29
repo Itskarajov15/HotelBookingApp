@@ -1,6 +1,8 @@
 ﻿using HotelBooking.Core.Contracts;
 using HotelBooking.Core.Models.Rooms;
+using HotelBooking.Infrastructure.Data.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelBooking.Controllers
@@ -9,10 +11,12 @@ namespace HotelBooking.Controllers
     public class RoomsController : Controller
     {
         private readonly IRoomService service;
+        private readonly UserManager<User> userManager;
 
-        public RoomsController(IRoomService service)
+        public RoomsController(IRoomService service, UserManager<User> userManager)
         {
             this.service = service;
+            this.userManager = userManager;
         }
 
         public IActionResult Add() => this.View(new AddRoomViewModel
@@ -64,6 +68,7 @@ namespace HotelBooking.Controllers
         public IActionResult Reserve(int id, ReserveRoomViewModel reserveRoom)
         {
             reserveRoom.RoomId = id;
+            string userId = this.userManager.GetUserId(User);
 
             if (!ModelState.IsValid)
             {

@@ -26,8 +26,6 @@ namespace HotelBooking.Infrastructure.Data
 
         public DbSet<RoomImage> RoomImages { get; set; }
 
-        public DbSet<Client> Clients { get; set; }
-
         public DbSet<Reservation> Reservations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

@@ -81,9 +81,19 @@ namespace HotelBooking.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
-            [StringLength(60, ErrorMessage = "The {0} must be between {1} and {2} characters")]
-            [Display(Name = "Full Name")]
-            public string FullName { get; set; }
+            [StringLength(50, ErrorMessage = "The {0} must be between {1} and {2} characters")]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [StringLength(50, ErrorMessage = "The {0} must be between {1} and {2} characters")]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+
+            [Required]
+            [StringLength(10, ErrorMessage = "The {0} must be between {1} and {2} characters")]
+            [Display(Name = "Phone Number")]
+            public string PhoneNumber { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -120,7 +130,9 @@ namespace HotelBooking.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
-                user.FullName = Input.FullName;
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
+                user.PhoneNumber = Input.PhoneNumber;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);

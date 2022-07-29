@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using HotelBooking.Infrastructure.Data.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HotelBooking.Infrastructure.Data.Models
 {
@@ -6,9 +7,9 @@ namespace HotelBooking.Infrastructure.Data.Models
     {
         public int Id { get; set; }
 
-        public int ClientId { get; set; }
+        public string UserId { get; set; }
 
-        public Client Client { get; set; }
+        public User User { get; set; }
 
         public int RoomId { get; set; }
 
