@@ -30,10 +30,6 @@ namespace HotelBooking.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Room>()
-                .Property(r => r.IsReserved)
-                .HasDefaultValue(false);
-
             base.OnModelCreating(builder);
         }
     }

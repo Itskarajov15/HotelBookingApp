@@ -24,8 +24,6 @@ namespace HotelBooking.Core.Services
                               .FirstOrDefault(r => r.Id == roomId)
                               .HotelId;
 
-            //var (startDate, endDate) = ParseDates(model.StartDate, model.EndDate);
-
             var freeRoom = GetFreeRoom(model.StartDate, model.EndDate, roomType, hotelId);
 
             if (freeRoom == null)
@@ -45,7 +43,6 @@ namespace HotelBooking.Core.Services
             try
             {
                 this.context.Reservations.Add(reservation);
-                freeRoom.IsReserved = true;
                 this.context.SaveChanges();
                 isReservationDone = true;
             }
@@ -55,25 +52,6 @@ namespace HotelBooking.Core.Services
             }
 
             return isReservationDone;
-        }
-
-        private (DateTime, DateTime) ParseDates(string startDateString, string endDateString)
-        {
-            var startDateParsed = DateTime
-                .TryParseExact(startDateString,
-                "dd/MM/yyyy",
-                CultureInfo.InvariantCulture,
-                DateTimeStyles.None,
-                out var startDate);
-
-            var endDateParsed = DateTime
-                .TryParseExact(endDateString,
-                "dd/MM/yyyy",
-                CultureInfo.InvariantCulture,
-                DateTimeStyles.None,
-                out var endDate);
-
-            return (startDate, endDate);
         }
 
         private string GetRoomTypeByRoomId(int roomId)
