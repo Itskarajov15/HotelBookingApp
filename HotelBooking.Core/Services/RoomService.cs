@@ -2,6 +2,7 @@
 using HotelBooking.Core.Models.Rooms;
 using HotelBooking.Infrastructure.Data;
 using HotelBooking.Infrastructure.Data.Models;
+using System.Globalization;
 
 namespace HotelBooking.Core.Services
 {
@@ -23,9 +24,9 @@ namespace HotelBooking.Core.Services
                               .FirstOrDefault(r => r.Id == roomId)
                               .HotelId;
 
-            //string dateWithoutTime = model.StartDate.Date.ToString("dd-MM-yyyy");
+            //var (startDate, endDate) = ParseDates(model.StartDate, model.EndDate);
 
-            var freeRoom = GetFreeRoom(model.StartDate.Date, model.EndDate.Date, roomType, hotelId);
+            var freeRoom = GetFreeRoom(model.StartDate, model.EndDate, roomType, hotelId);
 
             if (freeRoom == null)
             {
@@ -35,9 +36,9 @@ namespace HotelBooking.Core.Services
             var reservation = new Reservation()
             {
                 UserId = userId,
-                EndDate = model.StartDate.Date,
+                EndDate = model.EndDate,
                 RoomId = freeRoom.Id,
-                StartDate = model.EndDate.Date,
+                StartDate = model.StartDate,
                 TotalPrice = (decimal)((model.EndDate - model.StartDate).TotalDays) * freeRoom.PriceForOneNight
             };
 
@@ -56,6 +57,25 @@ namespace HotelBooking.Core.Services
             return isReservationDone;
         }
 
+        private (DateTime, DateTime) ParseDates(string startDateString, string endDateString)
+        {
+            var startDateParsed = DateTime
+                .TryParseExact(startDateString,
+                "dd/MM/yyyy",
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                out var startDate);
+
+            var endDateParsed = DateTime
+                .TryParseExact(endDateString,
+                "dd/MM/yyyy",
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                out var endDate);
+
+            return (startDate, endDate);
+        }
+
         private string GetRoomTypeByRoomId(int roomId)
             => this.context
                 .Rooms
@@ -69,14 +89,13 @@ namespace HotelBooking.Core.Services
                              .Reservations
                              .Where(r => r.Room.RoomType.TypeName == typeName)
                              .Where(r => r.Room.HotelId == hotelId)
-                             .Where(r => (startDate >= r.StartDate && startDate <= r.EndDate) || (endDate >= r.StartDate && endDate <= r.EndDate))
+                             .Where(r => (startDate >= r.StartDate && startDate < r.EndDate) || (endDate >= r.StartDate && endDate <= r.EndDate))
                              .Select(r => r.RoomId)
                              .ToList();
 
             var freeRoom = this.context
                             .Rooms
-                            .Where(r => !takenRoomIds.Contains(r.Id) 
-                            && r.IsReserved == false
+                            .Where(r => !takenRoomIds.Contains(r.Id)
                             && r.RoomType.TypeName == typeName
                             && r.HotelId == hotelId)
                             .FirstOrDefault();
