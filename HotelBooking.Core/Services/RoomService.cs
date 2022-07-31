@@ -14,16 +14,46 @@ namespace HotelBooking.Core.Services
             this.context = context;
         }
 
-        public bool ReserveRoom(ReserveRoomViewModel model)
+        public bool ReserveRoom(ReserveRoomViewModel model, string userId, int roomId)
         {
-            var roomType = GetRoomTypeByRoomId(model.RoomId);
+            var isReservationDone = false;
+            var roomType = GetRoomTypeByRoomId(roomId);
+            var hotelId = this.context
+                              .Rooms
+                              .FirstOrDefault(r => r.Id == roomId)
+                              .HotelId;
 
-            if (IsRoomReserved(model.StartDate, model.EndDate, model.RoomId, roomType))
+            //string dateWithoutTime = model.StartDate.Date.ToString("dd-MM-yyyy");
+
+            var freeRoom = GetFreeRoom(model.StartDate.Date, model.EndDate.Date, roomType, hotelId);
+
+            if (freeRoom == null)
             {
-                return false;
+                return isReservationDone;
             }
 
-            return true;
+            var reservation = new Reservation()
+            {
+                UserId = userId,
+                EndDate = model.StartDate.Date,
+                RoomId = freeRoom.Id,
+                StartDate = model.EndDate.Date,
+                TotalPrice = (decimal)((model.EndDate - model.StartDate).TotalDays) * freeRoom.PriceForOneNight
+            };
+
+            try
+            {
+                this.context.Reservations.Add(reservation);
+                freeRoom.IsReserved = true;
+                this.context.SaveChanges();
+                isReservationDone = true;
+            }
+            catch (Exception)
+            {
+                isReservationDone = false;
+            }
+
+            return isReservationDone;
         }
 
         private string GetRoomTypeByRoomId(int roomId)
@@ -33,14 +63,25 @@ namespace HotelBooking.Core.Services
                 .Select(r => r.RoomType.TypeName)
                 .FirstOrDefault();
 
-        private bool IsRoomReserved(DateTime startDate, DateTime endDate, int roomId, string typeName)
+        private Room GetFreeRoom(DateTime startDate, DateTime endDate, string typeName, int hotelId)
         {
-            bool isReserved = this.context
-                                  .Reservations
-                                  .Where(r => r.Room.RoomType.TypeName == typeName)
-                                  .Any(r => (r.StartDate < startDate && r.EndDate < startDate) || (r.StartDate > r.EndDate && r.EndDate > endDate));
+            var takenRoomIds = this.context
+                             .Reservations
+                             .Where(r => r.Room.RoomType.TypeName == typeName)
+                             .Where(r => r.Room.HotelId == hotelId)
+                             .Where(r => (startDate >= r.StartDate && startDate <= r.EndDate) || (endDate >= r.StartDate && endDate <= r.EndDate))
+                             .Select(r => r.RoomId)
+                             .ToList();
 
-            return isReserved;
+            var freeRoom = this.context
+                            .Rooms
+                            .Where(r => !takenRoomIds.Contains(r.Id) 
+                            && r.IsReserved == false
+                            && r.RoomType.TypeName == typeName
+                            && r.HotelId == hotelId)
+                            .FirstOrDefault();
+
+            return freeRoom;
         }
 
         public bool AddRoom(AddRoomViewModel room)

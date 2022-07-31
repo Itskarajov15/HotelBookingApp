@@ -51,23 +51,30 @@
     </div>
 </div>
 
-<h2 class="h2">Rooms</h2>
-
 <div class="row">
     @{
-        foreach (var room in ViewBag.Rooms)
+        if (ViewBag.Rooms.Count <= 0)
         {
-            <div class="col-3">
-                <div class="card mb-3 room-card">
-                    <img src="@room.RoomImageUrl" class="card-img-top" alt="Room image">
-                    <div class="card-body">
-                        <h5 class="card-title">@room.RoomType room</h5>
-                        <p class="card-text">@room.RoomDescription</p>
-                        <a asp-controller="Rooms" asp-action="Details" asp-route-id="@room.Id" button type="button" class="btn btn-primary btn-lg btn-block d-block">View Room</a>
-                    </div>
+            <h3 class="h2">There are no rooms added in this hotel</h3>
+        }
+        else
+        {
+            <h2 class="h2">Rooms</h2>
 
+            foreach (var room in ViewBag.Rooms)
+            {
+                <div class="col-3">
+                    <div class="card mb-3 room-card">
+                        <img src="@room.RoomImageUrl" class="card-img-top" alt="Room image">
+                        <div class="card-body">
+                            <h5 class="card-title">@room.RoomType room</h5>
+                            <p class="card-text">@room.RoomDescription</p>
+                            <a asp-controller="Rooms" asp-action="Details" asp-route-id="@room.Id" button type="button" class="btn btn-primary btn-lg btn-block d-block">View Room</a>
+                        </div>
+
+                    </div>
                 </div>
-            </div>
+            }
         }
     }
 </div>

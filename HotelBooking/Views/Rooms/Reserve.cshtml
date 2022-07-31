@@ -8,7 +8,7 @@
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-lg-3 col-xl-6">
         <h2 class="heading-margin text-center">Reserve Room</h2>
 
-        <div asp-validation-summary="ModelOnly"></div>
+        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
 
         <form method="post">
             <div class="mb-3">
@@ -21,13 +21,8 @@
                 <input asp-for="EndDate" class="form-control">
                 <span asp-validation-for="EndDate" class="small text-danger"></span>
             </div>
-            <div class="mb-3">
-                <label asp-for="CountOfPeople" class="form-label"></label>
-                <input asp-for="CountOfPeople" class="form-control">
-                <span asp-validation-for="CountOfPeople" class="small text-danger"></span>
-            </div>
 
-            <input class="btn btn-primary" type="submit" onclick="return confirm('Are you sure you want to reserve the room?');" value="Reserve" />
+            <input id="reserveButton" class="btn btn-primary" type="submit" onclick="return confirm('Are you sure you want to reserve the room?');" value="Reserve" />
         </form>
     </div>
 </div>

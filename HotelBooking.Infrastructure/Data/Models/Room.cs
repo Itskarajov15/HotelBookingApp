@@ -8,6 +8,7 @@ namespace HotelBooking.Infrastructure.Data.Models
         public Room()
         {
             this.RoomImages = new List<RoomImage>();
+            this.Reservations = new List<Reservation>();
         }
 
         public int Id { get; set; }
@@ -29,5 +30,7 @@ namespace HotelBooking.Infrastructure.Data.Models
         public RoomType RoomType { get; set; }
 
         public ICollection<RoomImage> RoomImages { get; set; }
+
+        public ICollection<Reservation> Reservations { get; set; }
     }
 }

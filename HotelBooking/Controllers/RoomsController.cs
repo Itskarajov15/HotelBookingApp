@@ -67,15 +67,19 @@ namespace HotelBooking.Controllers
         [HttpPost]
         public IActionResult Reserve(int id, ReserveRoomViewModel reserveRoom)
         {
-            reserveRoom.RoomId = id;
-            string userId = this.userManager.GetUserId(User);
-
             if (!ModelState.IsValid)
             {
                 return this.View();
             }
 
-            var isReserved = this.service.ReserveRoom(reserveRoom);
+            var isReserved = this.service.ReserveRoom(reserveRoom, this.userManager.GetUserId(User), id);
+
+            if (!isReserved)
+            {
+                var roomType = this.service.GetRoom(id).TypeName;
+                ModelState.AddModelError(String.Empty, $"All {roomType} are reserved for this period of time.");
+                return this.View();
+            }
 
             return this.RedirectToAction("All", "Hotels");
         }
