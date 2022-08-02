@@ -72,6 +72,12 @@ namespace HotelBooking.Controllers
                 return this.View();
             }
 
+            if (!ValidateDates(reserveRoom.StartDate, reserveRoom.EndDate))
+            {
+                ModelState.AddModelError(String.Empty, "Invalid dates");
+                return this.View();
+            }
+
             var isReserved = this.service.ReserveRoom(reserveRoom, this.userManager.GetUserId(User), id);
 
             if (!isReserved)
@@ -82,6 +88,19 @@ namespace HotelBooking.Controllers
             }
 
             return this.RedirectToAction("All", "Hotels");
+        }
+
+        private bool ValidateDates(DateTime startDate, DateTime endDate)
+        {
+            if (endDate.Date < startDate.Date 
+                || startDate.Date < DateTime.UtcNow.Date 
+                || startDate.Year > DateTime.UtcNow.Year 
+                || endDate.Year > DateTime.UtcNow.Year)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
