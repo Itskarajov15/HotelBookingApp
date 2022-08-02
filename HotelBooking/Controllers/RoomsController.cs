@@ -10,18 +10,20 @@ namespace HotelBooking.Controllers
     [Authorize]
     public class RoomsController : Controller
     {
-        private readonly IRoomService service;
+        private readonly IRoomService roomService;
         private readonly UserManager<User> userManager;
+        private readonly IService service;
 
-        public RoomsController(IRoomService service, UserManager<User> userManager)
+        public RoomsController(IRoomService roomService, UserManager<User> userManager, IService service)
         {
-            this.service = service;
+            this.roomService = roomService;
             this.userManager = userManager;
+            this.service = service;
         }
 
         public IActionResult Add() => this.View(new AddRoomViewModel
         {
-            RoomTypes = this.service.GetRoomTypes()
+            RoomTypes = this.roomService.GetRoomTypes()
         });
 
         [HttpPost]
@@ -29,18 +31,18 @@ namespace HotelBooking.Controllers
         {
             if (!ModelState.IsValid)
             {
-                roomModel.RoomTypes = this.service.GetRoomTypes();
+                roomModel.RoomTypes = this.roomService.GetRoomTypes();
                 return this.View(roomModel);
             }
 
             roomModel.HotelId = id;
 
-            var isAdded = this.service.AddRoom(roomModel);
+            var isAdded = this.roomService.AddRoom(roomModel);
 
             if (!isAdded)
             {
                 ModelState.AddModelError(string.Empty, "Something went wrong");
-                roomModel.RoomTypes = this.service.GetRoomTypes();
+                roomModel.RoomTypes = this.roomService.GetRoomTypes();
                 return this.View(roomModel);
             }
 
@@ -49,7 +51,7 @@ namespace HotelBooking.Controllers
 
         public IActionResult Details(int id)
         {
-            var room = this.service.GetRoom(id);
+            var room = this.roomService.GetRoom(id);
 
             if (room == null)
             {
@@ -72,35 +74,22 @@ namespace HotelBooking.Controllers
                 return this.View();
             }
 
-            if (!ValidateDates(reserveRoom.StartDate, reserveRoom.EndDate))
+            if (!service.ValidateDates(reserveRoom.StartDate, reserveRoom.EndDate))
             {
                 ModelState.AddModelError(String.Empty, "Invalid dates");
                 return this.View();
             }
 
-            var isReserved = this.service.ReserveRoom(reserveRoom, this.userManager.GetUserId(User), id);
+            var isReserved = this.roomService.ReserveRoom(reserveRoom, this.userManager.GetUserId(User), id);
 
             if (!isReserved)
             {
-                var roomType = this.service.GetRoom(id).TypeName;
+                var roomType = this.roomService.GetRoom(id).TypeName;
                 ModelState.AddModelError(String.Empty, $"All {roomType} are reserved for this period of time.");
                 return this.View();
             }
 
             return this.RedirectToAction("All", "Hotels");
-        }
-
-        private bool ValidateDates(DateTime startDate, DateTime endDate)
-        {
-            if (endDate.Date < startDate.Date 
-                || startDate.Date < DateTime.UtcNow.Date 
-                || startDate.Year > DateTime.UtcNow.Year 
-                || endDate.Year > DateTime.UtcNow.Year)
-            {
-                return false;
-            }
-
-            return true;
         }
     }
 }
