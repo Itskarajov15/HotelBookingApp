@@ -13,5 +13,7 @@ namespace HotelBooking.Core.Contracts
         RoomViewModel GetRoom(int roomId);
 
         bool ReserveRoom(ReserveRoomViewModel model, string userId, int roomId);
+
+        int GetHotelIdByRoomId(int roomId);
     }
 }

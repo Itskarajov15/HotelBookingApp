@@ -89,7 +89,7 @@ namespace HotelBooking.Controllers
                 return this.View();
             }
 
-            return this.RedirectToAction("All", "Hotels");
+            return RedirectToAction("Details", "Hotels", new { id = roomService.GetHotelIdByRoomId(id) }); ///// Return to My Reservations When Done
         }
     }
 }

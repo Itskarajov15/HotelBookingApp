@@ -126,6 +126,12 @@ namespace HotelBooking.Core.Services
                    .DistinctBy(r => r.RoomType)
                    .ToList();
 
+        public int GetHotelIdByRoomId(int roomId)
+            => this.context
+                   .Rooms
+                   .FirstOrDefault(r => r.Id == roomId)
+                   .HotelId;
+
         public RoomViewModel GetRoom(int roomId)
             => this.context
                    .Rooms
