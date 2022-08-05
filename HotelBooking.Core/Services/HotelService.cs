@@ -1,4 +1,6 @@
-﻿using HotelBooking.Core.Contracts;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using HotelBooking.Core.Contracts;
 using HotelBooking.Core.Models.Hotels;
 using HotelBooking.Infrastructure.Data;
 using HotelBooking.Infrastructure.Data.Models;
@@ -8,10 +10,12 @@ namespace HotelBooking.Core.Services
     public class HotelService : IHotelService
     {
         private readonly ApplicationDbContext context;
+        private readonly IMapper mapper;
 
-        public HotelService(ApplicationDbContext context)
+        public HotelService(ApplicationDbContext context, IMapper mapper)
         {
             this.context = context;
+            this.mapper = mapper;
         }
 
         public bool AddHotel(AddHotelViewModel hotel)
@@ -58,36 +62,18 @@ namespace HotelBooking.Core.Services
             =>  this.context
                     .Hotels
                     .Where(h => h.Id == hotelId)
-                    .Select(h => new HotelViewModel()
-                    {
-                        Id = h.Id,
-                        HotelName = h.HotelName,
-                        CityName = h.City.CityName,
-                        CountryName = h.City.Country.CountryName,
-                        Description = h.Description,
-                        HotelImages = h.HotelImages.Select(h => h.ImageUrl).ToList(),
-                        PrimaryImageUrl = h.PrimaryImageUrl
-                    })
+                    .ProjectTo<HotelViewModel>(this.mapper.ConfigurationProvider)
                     .FirstOrDefault();
 
         public IEnumerable<HotelCardViewModel> GetAllHotels()
             => this.context.Hotels
-                        .Select(h => new HotelCardViewModel
-                        {
-                            Id = h.Id,
-                            HotelName = h.HotelName,
-                            PrimaryImageUrl = h.PrimaryImageUrl
-                        })
+                        .ProjectTo<HotelCardViewModel>(this.mapper.ConfigurationProvider)
                         .ToList();
 
         public IEnumerable<HotelCityViewModel> GetCityNames()
             => this.context
                    .Cities
-                   .Select(c => new HotelCityViewModel
-                   {
-                       Id = c.Id,
-                       Name = c.CityName
-                   })
+                   .ProjectTo<HotelCityViewModel>(this.mapper.ConfigurationProvider)
                    .ToList();
 
         public bool IsCityValid(int cityId)
