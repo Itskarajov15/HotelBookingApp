@@ -22,13 +22,7 @@ namespace HotelBooking.Core.Services
         {
             bool isAdded = false;
 
-            var newHotel = new Hotel()
-            {
-                HotelName = hotel.HotelName,
-                Description = hotel.Description,
-                CityId = hotel.CityId,
-                PrimaryImageUrl = hotel.PrimaryImageUrl
-            };
+            var newHotel = mapper.Map<Hotel>(hotel);
 
             var additionalImages = new List<HotelImage>();
 

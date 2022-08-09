@@ -1,4 +1,6 @@
-﻿using HotelBooking.Core.Contracts;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using HotelBooking.Core.Contracts;
 using HotelBooking.Core.Models.Rooms;
 using HotelBooking.Infrastructure.Data;
 using HotelBooking.Infrastructure.Data.Models;
@@ -9,10 +11,12 @@ namespace HotelBooking.Core.Services
     public class RoomService : IRoomService
     {
         private readonly ApplicationDbContext context;
+        private readonly IMapper mapper;
 
-        public RoomService(ApplicationDbContext context)
+        public RoomService(ApplicationDbContext context, IMapper mapper)
         {
             this.context = context;
+            this.mapper = mapper;
         }
 
         public bool ReserveRoom(ReserveRoomViewModel model, string userId, int roomId)
@@ -85,13 +89,7 @@ namespace HotelBooking.Core.Services
         {
             bool isAdded = false;
 
-            var newRoom = new Room()
-            {
-                RoomTypeId = room.RoomTypeId,
-                Description = room.Description,
-                HotelId = room.HotelId,
-                PriceForOneNight = room.PriceForOneNight
-            };
+            var newRoom = mapper.Map<Room>(room);
 
             AddImageToRoom(newRoom, room.FirstRoomImageUrl);
             AddImageToRoom(newRoom, room.SecondRoomImageUrl);
@@ -115,13 +113,7 @@ namespace HotelBooking.Core.Services
             => this.context
                    .Rooms
                    .Where(r => r.HotelId == hotelId)
-                   .Select(r => new RoomCardViewModel()
-                   {
-                       Id = r.Id,
-                       RoomType = r.RoomType.TypeName,
-                       RoomDescription = r.Description,
-                       RoomImageUrl = r.RoomImages.Select(i => i.ImageUrl).FirstOrDefault()
-                   })
+                   .ProjectTo<RoomCardViewModel>(this.mapper.ConfigurationProvider)
                    .ToList()
                    .DistinctBy(r => r.RoomType)
                    .ToList();
@@ -136,25 +128,13 @@ namespace HotelBooking.Core.Services
             => this.context
                    .Rooms
                    .Where(r => r.Id == roomId)
-                   .Select(r => new RoomViewModel()
-                   {
-                       Id = r.Id,
-                       Description = r.Description,
-                       HotelName = r.Hotel.HotelName,
-                       PriceForOneNight = r.PriceForOneNight,
-                       RoomImageUrls = r.RoomImages.Select(i => i.ImageUrl).ToList(),
-                       TypeName = r.RoomType.TypeName
-                   })
+                   .ProjectTo<RoomViewModel>(this.mapper.ConfigurationProvider)
                    .FirstOrDefault();
 
         public IEnumerable<RoomTypeViewModel> GetRoomTypes()
             => this.context
                    .RoomTypes
-                   .Select(rt => new RoomTypeViewModel
-                   {
-                       Id = rt.Id,
-                       Name = rt.TypeName
-                   })
+                   .ProjectTo<RoomTypeViewModel>(this.mapper.ConfigurationProvider)
                    .ToList();
 
         private void AddImageToRoom(Room room, string imageUrl)

@@ -16,7 +16,7 @@
                 <select asp-for="RoomTypeId" class="form-control">
                     @foreach (var roomType in Model.RoomTypes)
                     {
-                        <option value="@roomType.Id">@roomType.Name</option>
+                        <option value="@roomType.Id">@roomType.TypeName</option>
                     }
                 </select>
             </div>
