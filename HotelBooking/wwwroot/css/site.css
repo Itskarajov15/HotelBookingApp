@@ -33,6 +33,14 @@ body {
     height: 100%;
 }
 
+.reservation {
+    display: inline-block;
+}
+
+.span {
+    margin-right: 20px;
+}
+
 .button {
     margin-top: 40px;
 }

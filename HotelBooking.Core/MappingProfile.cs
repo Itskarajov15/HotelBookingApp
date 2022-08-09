@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HotelBooking.Core.Models.Hotels;
 using HotelBooking.Core.Models.Rooms;
+using HotelBooking.Core.Models.Users;
 using HotelBooking.Infrastructure.Data.Models;
 
 namespace HotelBooking.Core
@@ -36,6 +37,14 @@ namespace HotelBooking.Core
                 .ForMember(r => r.RoomImageUrl, cfg => cfg.MapFrom(x => x.RoomImages.Select(i => i.ImageUrl).FirstOrDefault()));
 
             this.CreateMap<AddRoomViewModel, Room>();
+
+            //Reservations
+            this.CreateMap<Reservation, UserReservationViewModel>()
+                .ForMember(r => r.HotelName, cfg => cfg.MapFrom(x => x.Room.Hotel.HotelName))
+                .ForMember(r => r.StartDate, cfg => cfg.MapFrom(x => x.StartDate.ToString("d")))
+                .ForMember(r => r.EndDate, cfg => cfg.MapFrom(x => x.EndDate.ToString("d")))
+                .ForMember(r => r.GuestName, cfg => cfg.MapFrom(x => $"{x.User.FirstName} {x.User.LastName}"))
+                .ForMember(r => r.RoomType, cfg => cfg.MapFrom(x => x.Room.RoomType.TypeName));
         }
     }
 }
