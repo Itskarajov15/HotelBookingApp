@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using HotelBooking.Core.Contracts;
 using HotelBooking.Core.Models.Users;
 using HotelBooking.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace HotelBooking.Core.Services
 {
@@ -23,5 +24,15 @@ namespace HotelBooking.Core.Services
                    .Where(r => r.UserId == userId)
                    .ProjectTo<UserReservationViewModel>(this.mapper.ConfigurationProvider)
                    .ToList();
+
+        public async Task<IEnumerable<UserListViewModel>> GetUsers()
+        {
+            var users = await this.context
+                             .Users
+                             .ProjectTo<UserListViewModel>(this.mapper.ConfigurationProvider)
+                             .ToListAsync();
+
+            return users;
+        }
     }
 }
