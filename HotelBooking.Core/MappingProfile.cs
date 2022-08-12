@@ -50,6 +50,8 @@ namespace HotelBooking.Core
             //Users
             this.CreateMap<User, UserListViewModel>()
                 .ForMember(u => u.Name, cfg => cfg.MapFrom(x => $"{x.FirstName} {x.LastName}"));
+
+            this.CreateMap<User, UserEditViewModel>();
         }
     }
 }

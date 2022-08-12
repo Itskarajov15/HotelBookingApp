@@ -1,3 +1,5 @@
+using AspNetCoreHero.ToastNotification;
+using AspNetCoreHero.ToastNotification.Extensions;
 using HotelBooking.Core.Contracts;
 using HotelBooking.Core.Services;
 using HotelBooking.Infrastructure.Data;
@@ -26,6 +28,13 @@ builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<IService, Service>();
 builder.Services.AddScoped<IUserService, UserService>();
 
+builder.Services.AddNotyf(config =>
+{
+    config.DurationInSeconds = 10;
+    config.IsDismissable = true;
+    config.Position = NotyfPosition.BottomRight;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -49,8 +58,15 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
+    name: "Area",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.UseNotyf();
+
 app.MapRazorPages();
 
 app.Run();

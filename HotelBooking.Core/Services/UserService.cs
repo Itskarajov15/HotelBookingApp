@@ -25,14 +25,48 @@ namespace HotelBooking.Core.Services
                    .ProjectTo<UserReservationViewModel>(this.mapper.ConfigurationProvider)
                    .ToList();
 
-        public async Task<IEnumerable<UserListViewModel>> GetUsers()
+        public async Task<UserEditViewModel> GetUserForEdit(string userId)
         {
-            var users = await this.context
+            var user = await this.context
+                            .Users
+                            .FindAsync(userId);
+
+            var projectedUser = this.mapper.Map<UserEditViewModel>(user);
+
+            return projectedUser;
+        }
+
+        public async Task<IEnumerable<UserListViewModel>> GetUsers()
+            => await this.context
                              .Users
                              .ProjectTo<UserListViewModel>(this.mapper.ConfigurationProvider)
                              .ToListAsync();
 
-            return users;
+        public async Task<bool> UpdateUser(UserEditViewModel model)
+        {
+            bool result = false;
+            var user = await this.context
+                                 .Users
+                                 .FindAsync(model.Id);
+
+            if (user != null)
+            {
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+
+
+                try
+                {
+                    this.context.SaveChanges();
+                    result = true;
+                }
+                catch (Exception)
+                {
+                    result = false;
+                }
+            }
+
+            return result;
         }
     }
 }

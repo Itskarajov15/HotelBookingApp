@@ -7,5 +7,9 @@ namespace HotelBooking.Core.Contracts
         List<UserReservationViewModel> GetReservationsByUserId(string userId);
 
         Task<IEnumerable<UserListViewModel>> GetUsers();
+
+        Task<UserEditViewModel> GetUserForEdit(string userId);
+
+        Task<bool> UpdateUser(UserEditViewModel model);
     }
 }
