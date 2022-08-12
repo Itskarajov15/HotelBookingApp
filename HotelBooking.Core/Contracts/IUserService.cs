@@ -1,4 +1,5 @@
 ﻿using HotelBooking.Core.Models.Users;
+using HotelBooking.Infrastructure.Data.Identity;
 
 namespace HotelBooking.Core.Contracts
 {
@@ -11,5 +12,7 @@ namespace HotelBooking.Core.Contracts
         Task<UserEditViewModel> GetUserForEdit(string userId);
 
         Task<bool> UpdateUser(UserEditViewModel model);
+
+        Task<User> GetUserById(string id);
     }
 }

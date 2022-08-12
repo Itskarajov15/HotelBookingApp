@@ -8,6 +8,10 @@ using System.Security.Claims;
 using HotelBooking.Infrastructure.Data.Identity;
 using HotelBooking.Core.Models.Users;
 using AspNetCoreHero.ToastNotification.Abstractions;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace HotelBooking.Areas.Admin.Controllers
 {
@@ -47,7 +51,7 @@ namespace HotelBooking.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(string id, UserEditViewModel model)
         {
-            if (!ModelState.IsValid || id != model.Id)
+            if (!ModelState.IsValid)
             {
                 return this.View(model);
             }
@@ -66,16 +70,24 @@ namespace HotelBooking.Areas.Admin.Controllers
 
         public async Task<IActionResult> Roles(string id)
         {
-            return Ok(id);
-        }
+            var user = await userService.GetUserById(id);
 
-        public IActionResult Reservations()
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var model = new UserRolesViewModel()
+            {
+                UserId = user.Id,
+                Name = $"{user.FirstName} {user.LastName}"
+            };
 
-            var reservations = this.userService.GetReservationsByUserId(userId);
+            ViewBag.RoleItems = roleManager.Roles
+                                   .ToList()
+                                   .Select(r => new SelectListItem()
+                                   {
+                                       Text = r.Name,
+                                       Value = r.Id,
+                                       Selected = userManager.IsInRoleAsync(user, r.Name).Result
+                                   });
 
-            return View(reservations);
+            return View(model);
         }
 
         //public async Task<IActionResult> CreateRole()

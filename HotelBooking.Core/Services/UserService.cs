@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using HotelBooking.Core.Contracts;
 using HotelBooking.Core.Models.Users;
 using HotelBooking.Infrastructure.Data;
+using HotelBooking.Infrastructure.Data.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelBooking.Core.Services
@@ -10,7 +11,7 @@ namespace HotelBooking.Core.Services
     public class UserService : IUserService
     {
         private readonly ApplicationDbContext context;
-        private readonly IMapper mapper;
+        private readonly IMapper mapper;   
 
         public UserService(ApplicationDbContext context, IMapper mapper)
         {
@@ -24,6 +25,11 @@ namespace HotelBooking.Core.Services
                    .Where(r => r.UserId == userId)
                    .ProjectTo<UserReservationViewModel>(this.mapper.ConfigurationProvider)
                    .ToList();
+
+        public async Task<User> GetUserById(string id)
+            => await this.context
+                         .Users
+                         .FindAsync(id);
 
         public async Task<UserEditViewModel> GetUserForEdit(string userId)
         {
@@ -53,7 +59,6 @@ namespace HotelBooking.Core.Services
             {
                 user.FirstName = model.FirstName;
                 user.LastName = model.LastName;
-
 
                 try
                 {
