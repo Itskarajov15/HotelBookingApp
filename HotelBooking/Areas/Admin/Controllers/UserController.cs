@@ -1,17 +1,12 @@
-﻿using HotelBooking.Core.Constants;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using HotelBooking.Core.Constants;
 using HotelBooking.Core.Contracts;
+using HotelBooking.Core.Models.Users;
+using HotelBooking.Infrastructure.Data.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using static HotelBooking.Core.Constants.UserConstants;
-using System.Security.Claims;
-using HotelBooking.Infrastructure.Data.Identity;
-using HotelBooking.Core.Models.Users;
-using AspNetCoreHero.ToastNotification.Abstractions;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 
 namespace HotelBooking.Areas.Admin.Controllers
 {
@@ -68,10 +63,24 @@ namespace HotelBooking.Areas.Admin.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Roles(UserRolesViewModel model)
+        {
+            var user = await userService.GetUserById(model.UserId);
+            var userRoles = await userManager.GetRolesAsync(user);
+            await userManager.RemoveFromRolesAsync(user, userRoles);
+
+            if (model.RoleNames.Length > 0)
+            {
+                await userManager.AddToRolesAsync(user, model.RoleNames);
+            }
+
+            return RedirectToAction(nameof(ManageUsers));
+        }
+
         public async Task<IActionResult> Roles(string id)
         {
             var user = await userService.GetUserById(id);
-
             var model = new UserRolesViewModel()
             {
                 UserId = user.Id,
@@ -83,9 +92,10 @@ namespace HotelBooking.Areas.Admin.Controllers
                                    .Select(r => new SelectListItem()
                                    {
                                        Text = r.Name,
-                                       Value = r.Id,
+                                       Value = r.Name,
                                        Selected = userManager.IsInRoleAsync(user, r.Name).Result
-                                   });
+                                   })
+                                   .ToList();
 
             return View(model);
         }
