@@ -16,41 +16,21 @@ namespace HotelBooking.Controllers
             this.roomService = roomService;
         }
 
-        public IActionResult All()
+        public IActionResult All(string searchString)
         {
-            var hotels = hotelService.GetAllHotels();
+            IEnumerable<HotelCardViewModel> hotels;
+
+            if (String.IsNullOrWhiteSpace(searchString))
+            {
+                hotels = hotelService.GetAllHotels();
+            }
+            else
+            {
+                hotels = hotelService.GetHotelsBySearchString(searchString);
+            }
 
             return this.View(hotels);
         }
-
-        //public IActionResult Add() => this.View(new AddHotelViewModel
-        //{
-        //    Cities = this.hotelService.GetCityNames()
-        //});
-
-        //[HttpPost]
-        //public IActionResult Add(AddHotelViewModel hotel)
-        //{
-        //    if (!this.hotelService.IsCityValid(hotel.CityId))
-        //    {
-        //        ModelState.AddModelError(nameof(hotel.CityId), "City does not exist");
-        //    }
-
-        //    if (!ModelState.IsValid)
-        //    {
-        //        hotel.Cities = this.hotelService.GetCityNames();
-        //        return this.View(hotel);
-        //    }
-
-        //    var isAdded = this.hotelService.AddHotel(hotel);
-
-        //    if (!isAdded)
-        //    {
-        //        return this.View(hotel);
-        //    }
-
-        //    return RedirectToAction("All", "Hotels");
-        //}
 
         public IActionResult Details(int id)
         {

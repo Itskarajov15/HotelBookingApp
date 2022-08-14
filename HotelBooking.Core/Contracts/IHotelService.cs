@@ -6,6 +6,8 @@ namespace HotelBooking.Core.Contracts
     {
         IEnumerable<HotelCardViewModel> GetAllHotels();
 
+        IEnumerable<HotelCardViewModel> GetHotelsBySearchString(string searchString);
+
         IEnumerable<HotelCityViewModel> GetCityNames();
 
         bool IsCityValid(int cityId);

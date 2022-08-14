@@ -72,5 +72,12 @@ namespace HotelBooking.Core.Services
 
         public bool IsCityValid(int cityId)
             => this.context.Cities.Any(c => c.Id == cityId) ? true : false;
+
+        public IEnumerable<HotelCardViewModel> GetHotelsBySearchString(string searchString)
+            => this.context
+                   .Hotels
+                   .Where(h => h.HotelName.ToLower().Contains(searchString.ToLower()))
+                   .ProjectTo<HotelCardViewModel>(this.mapper.ConfigurationProvider)
+                   .ToList();
     }
 }
