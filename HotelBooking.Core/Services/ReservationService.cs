@@ -17,6 +17,28 @@ namespace HotelBooking.Core.Services
             this.mapper = mapper;
         }
 
+        public bool DeclineReservation(int reservationId)
+        {
+            var isDeclined = false;
+
+            var reservation = this.context
+                                  .Reservations
+                                  .Find(reservationId);
+
+            try
+            {
+                this.context.Remove(reservation);
+                this.context.SaveChanges();
+                isDeclined = true;
+            }
+            catch (Exception)
+            {
+                isDeclined = false;
+            }
+
+            return isDeclined;
+        }
+
         public List<UserReservationViewModel> GetReservationsByUserId(string userId)
             => this.context
             .Reservations

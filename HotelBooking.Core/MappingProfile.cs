@@ -45,7 +45,8 @@ namespace HotelBooking.Core
                 .ForMember(r => r.StartDate, cfg => cfg.MapFrom(x => x.StartDate.ToString("d")))
                 .ForMember(r => r.EndDate, cfg => cfg.MapFrom(x => x.EndDate.ToString("d")))
                 .ForMember(r => r.GuestName, cfg => cfg.MapFrom(x => $"{x.User.FirstName} {x.User.LastName}"))
-                .ForMember(r => r.RoomType, cfg => cfg.MapFrom(x => x.Room.RoomType.TypeName));
+                .ForMember(r => r.RoomType, cfg => cfg.MapFrom(x => x.Room.RoomType.TypeName))
+                .ForMember(r => r.ReservationId, cfg => cfg.MapFrom(x => x.Id));
 
             //Users
             this.CreateMap<User, UserListViewModel>()

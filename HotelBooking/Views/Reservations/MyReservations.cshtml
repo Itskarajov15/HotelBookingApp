@@ -19,6 +19,8 @@
                     <span class="span"><b>Room Type</b> : @reservation.RoomType</span>
                     <span class="span"><b>Guest Name</b> : @reservation.GuestName</span>
                     <span class="span"><b>Price</b> : @reservation.TotalPrice</span>
+                    <a asp-area="" asp-action="DeclineReservation" asp-controller="Reservations" asp-route-id="@reservation.ReservationId" 
+                    onclick="return confirm('Are you sure you want to decline the reservation?');" type="button" class="btn btn-block btn-outline-danger btn-xs">Decline</a>
                 </div>
             </div>
         </div>

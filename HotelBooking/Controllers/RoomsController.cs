@@ -88,7 +88,7 @@ namespace HotelBooking.Controllers
                 return this.View();
             }
 
-            return RedirectToAction("Reservations", "Users");
+            return RedirectToAction("MyReservations", "Reservations");
         }
     }
 }
