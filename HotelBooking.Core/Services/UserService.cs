@@ -19,13 +19,6 @@ namespace HotelBooking.Core.Services
             this.mapper = mapper;
         }
 
-        public List<UserReservationViewModel> GetReservationsByUserId(string userId)
-            => this.context
-                   .Reservations
-                   .Where(r => r.UserId == userId)
-                   .ProjectTo<UserReservationViewModel>(this.mapper.ConfigurationProvider)
-                   .ToList();
-
         public async Task<User> GetUserById(string id)
             => await this.context
                          .Users

@@ -8,23 +8,13 @@ using System.Security.Claims;
 
 namespace HotelBooking.Controllers
 {
-    [Authorize]
-    public class UsersController : Controller
+    public class UsersController : BaseController
     {
         private readonly IUserService userService;
 
         public UsersController(IUserService userService)
         {
             this.userService = userService;
-        }
-
-        public IActionResult Reservations()
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            var reservations = this.userService.GetReservationsByUserId(userId);
-
-            return View(reservations);
         }
     }
 }

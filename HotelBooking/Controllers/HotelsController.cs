@@ -5,8 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HotelBooking.Controllers
 {
-    [Authorize]
-    public class HotelsController : Controller
+    public class HotelsController : BaseController
     {
         private readonly IHotelService hotelService;
         private readonly IRoomService roomService;
@@ -24,34 +23,34 @@ namespace HotelBooking.Controllers
             return this.View(hotels);
         }
 
-        public IActionResult Add() => this.View(new AddHotelViewModel
-        {
-            Cities = this.hotelService.GetCityNames()
-        });
+        //public IActionResult Add() => this.View(new AddHotelViewModel
+        //{
+        //    Cities = this.hotelService.GetCityNames()
+        //});
 
-        [HttpPost]
-        public IActionResult Add(AddHotelViewModel hotel)
-        {
-            if (!this.hotelService.IsCityValid(hotel.CityId))
-            {
-                ModelState.AddModelError(nameof(hotel.CityId), "City does not exist");
-            }
+        //[HttpPost]
+        //public IActionResult Add(AddHotelViewModel hotel)
+        //{
+        //    if (!this.hotelService.IsCityValid(hotel.CityId))
+        //    {
+        //        ModelState.AddModelError(nameof(hotel.CityId), "City does not exist");
+        //    }
 
-            if (!ModelState.IsValid)
-            {
-                hotel.Cities = this.hotelService.GetCityNames();
-                return this.View(hotel);
-            }
+        //    if (!ModelState.IsValid)
+        //    {
+        //        hotel.Cities = this.hotelService.GetCityNames();
+        //        return this.View(hotel);
+        //    }
 
-            var isAdded = this.hotelService.AddHotel(hotel);
+        //    var isAdded = this.hotelService.AddHotel(hotel);
 
-            if (!isAdded)
-            {
-                return this.View(hotel);
-            }
+        //    if (!isAdded)
+        //    {
+        //        return this.View(hotel);
+        //    }
 
-            return RedirectToAction("All", "Hotels");
-        }
+        //    return RedirectToAction("All", "Hotels");
+        //}
 
         public IActionResult Details(int id)
         {

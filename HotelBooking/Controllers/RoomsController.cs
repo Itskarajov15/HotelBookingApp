@@ -7,8 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HotelBooking.Controllers
 {
-    [Authorize]
-    public class RoomsController : Controller
+    public class RoomsController : BaseController
     {
         private readonly IRoomService roomService;
         private readonly UserManager<User> userManager;

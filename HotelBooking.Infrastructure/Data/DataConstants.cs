@@ -5,7 +5,7 @@
         public const int HotelNameMaxLength = 40;
         public const int HotelNameMinLength = 3;
         public const int DescriptionMinLength = 10;
-        public const int DescriptionMaxLength = 100;
+        public const int DescriptionMaxLength = 1000;
         public const int CityNameMaxLength = 85;
         public const int ContryNameMaxLength = 56;
         public const int CategoryNameMaxLength = 50;

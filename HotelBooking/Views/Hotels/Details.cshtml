@@ -79,6 +79,11 @@
     }
 </div>
 
-<div class="button">
-    <a asp-controller="Rooms" asp-action="Add" asp-route-id="@Model.Id" button type="button" class="btn btn-secondary btn-lg btn-block">Add Room</a>
-</div>
+@{
+    if (User.IsInRole("Administrator"))
+    {
+        <div class="button">
+            <a asp-controller="Rooms" asp-action="Add" asp-route-id="@Model.Id" button type="button" class="btn btn-secondary btn-lg btn-block">Add Room</a>
+        </div>
+    }
+}
