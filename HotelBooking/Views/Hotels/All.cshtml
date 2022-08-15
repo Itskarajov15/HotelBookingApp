@@ -30,7 +30,6 @@
 </div>
 
 @section scripts{
-    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY=" crossorigin="anonymous"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $("#hotelName").autocomplete({
@@ -40,9 +39,7 @@
                         data: { "prefix": request.term },
                         type: "POST",
                         success: function (data) {
-                            response($.map(data, function (item) {
-                                return item;
-                            }))
+                            response(data)
                         },
                         error: function (response) {
                             alert(response.responseText);
