@@ -45,5 +45,20 @@ namespace HotelBooking.Controllers
 
             return this.View(hotel);
         }
+
+        [HttpPost]
+        public JsonResult AutoComplete(string prefix)
+        {
+            var hotels = this.hotelService.GetAllHotels()
+                             .Where(h => h.HotelName.StartsWith(prefix))
+                             .Select(h => new
+                             {
+                                 label = h.HotelName,
+                                 val = h.HotelName
+                             })
+                             .ToList();
+
+            return Json(hotels);
+        }
     }
 }

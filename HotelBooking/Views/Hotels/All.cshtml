@@ -9,7 +9,7 @@
 <form asp-controller="Hotels" asp-action="All" method="get">
     <h4>Search</h4>
     <p>
-        <input type="text" name="SearchString" placeholder="Name of Hotel..." />
+        <input type="text" id="hotelName" name="SearchString" placeholder="Name of Hotel..." />
         <input type="submit" value="Search" />
     </p>
 </form>
@@ -28,3 +28,36 @@
         </div>
     }
 </div>
+
+@section scripts{
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#hotelName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '/Hotels/AutoComplete/',
+                        data: { "prefix": request.term },
+                        type: "POST",
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return item;
+                            }))
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                },
+                select: function (e, i) {
+                    //get selected value
+                    //$("#personNameValue").val(i.item.val);
+                },
+                minLength: 1
+            });
+        });
+    </script>
+    }
