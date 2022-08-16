@@ -10,14 +10,10 @@ namespace HotelBooking.Controllers
     public class RoomsController : BaseController
     {
         private readonly IRoomService roomService;
-        private readonly UserManager<User> userManager;
-        private readonly IService service;
 
-        public RoomsController(IRoomService roomService, UserManager<User> userManager, IService service)
+        public RoomsController(IRoomService roomService)
         {
             this.roomService = roomService;
-            this.userManager = userManager;
-            this.service = service;
         }
 
         public IActionResult Add() => this.View(new AddRoomViewModel
@@ -58,37 +54,6 @@ namespace HotelBooking.Controllers
             }
 
             return this.View(room);
-        }
-
-        public IActionResult Reserve()
-        {
-            return this.View();
-        }
-
-        [HttpPost]
-        public IActionResult Reserve(int id, ReserveRoomViewModel reserveRoom)
-        {
-            if (!ModelState.IsValid)
-            {
-                return this.View();
-            }
-
-            if (!service.ValidateDates(reserveRoom.StartDate, reserveRoom.EndDate))
-            {
-                ModelState.AddModelError(String.Empty, "Invalid dates");
-                return this.View();
-            }
-
-            var isReserved = this.roomService.ReserveRoom(reserveRoom, this.userManager.GetUserId(User), id);
-
-            if (!isReserved)
-            {
-                var roomType = this.roomService.GetRoom(id).TypeName;
-                ModelState.AddModelError(String.Empty, $"All {roomType} are reserved for this period of time.");
-                return this.View();
-            }
-
-            return RedirectToAction("MyReservations", "Reservations");
         }
     }
 }
