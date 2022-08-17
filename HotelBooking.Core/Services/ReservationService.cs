@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using HotelBooking.Core.Contracts;
+using HotelBooking.Core.Models.Rooms;
 using HotelBooking.Core.Models.Users;
 using HotelBooking.Infrastructure.Data;
 
