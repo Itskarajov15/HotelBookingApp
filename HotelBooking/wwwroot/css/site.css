@@ -35,6 +35,15 @@ body {
 
 .reservation {
     display: inline-block;
+    float: left;
+    margin-left: 50px;
+    text-align: center;
+}
+
+.searchButton {
+    margin-left: 40px;
+    margin-top: 33px;
+    width: 100px;
 }
 
 .span {
