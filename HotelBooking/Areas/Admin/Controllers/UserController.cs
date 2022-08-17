@@ -29,11 +29,35 @@ namespace HotelBooking.Areas.Admin.Controllers
         }
 
         [Authorize(Roles = UserConstants.Roles.Administrator)]
-        public async Task<IActionResult> ManageUsers()
+        public async Task<IActionResult> ManageUsers(string searchString)
         {
-            var users = await userService.GetUsers();
+            IEnumerable<UserListViewModel> users;
+
+            if (searchString == null)
+            {
+                users = await userService.GetUsers();
+            }
+            else
+            {
+                users = await userService.GetUsers(searchString);
+            }
 
             return View(users);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> AutoComplete(string prefix)
+        {
+            var users = (await this.userService.GetUsers())
+                             .Where(u => u.Name.ToLower().StartsWith(prefix.ToLower()))
+                             .Select(u => new
+                             {
+                                 label = u.Name,
+                                 val = u.Name
+                             })
+                             .ToList();
+
+            return Json(users);
         }
 
         public async Task<IActionResult> Edit(string id)

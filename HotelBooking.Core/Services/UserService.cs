@@ -11,7 +11,7 @@ namespace HotelBooking.Core.Services
     public class UserService : IUserService
     {
         private readonly ApplicationDbContext context;
-        private readonly IMapper mapper;   
+        private readonly IMapper mapper;
 
         public UserService(ApplicationDbContext context, IMapper mapper)
         {
@@ -35,11 +35,30 @@ namespace HotelBooking.Core.Services
             return projectedUser;
         }
 
-        public async Task<IEnumerable<UserListViewModel>> GetUsers()
-            => await this.context
-                             .Users
-                             .ProjectTo<UserListViewModel>(this.mapper.ConfigurationProvider)
-                             .ToListAsync();
+        public async Task<IEnumerable<UserListViewModel>> GetUsers(string searchString = null)
+        {
+            IEnumerable<UserListViewModel> users;
+
+
+
+            if (searchString == null)
+            {
+                users = await this.context
+                    .Users
+                    .ProjectTo<UserListViewModel>(this.mapper.ConfigurationProvider)
+                    .ToListAsync();
+            }
+            else
+            {
+                users = await this.context
+                    .Users
+                    .Where(u => u.FirstName.ToLower().Contains(searchString.ToLower()) || u.LastName.ToLower().Contains(searchString.ToLower()))
+                    .ProjectTo<UserListViewModel>(this.mapper.ConfigurationProvider)
+                    .ToListAsync();
+            }
+
+            return users;
+        }
 
         public async Task<bool> UpdateUser(UserEditViewModel model)
         {

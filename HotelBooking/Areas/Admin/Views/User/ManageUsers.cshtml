@@ -9,16 +9,13 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Application Users</h3>
-                <div class="card-tools">
-                    <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-                        <div class="input-group-append">
-                            <button type="submit" class="btn-primary"></button>
-                        </div>
-                    </div>
-                </div>
+                <form asp-area="admin" asp-controller="User" asp-action="ManageUsers" method="get" style="margin-top:20px">
+                    <p>
+                        <input type="text" id="userName" name="SearchString" placeholder="Name of User..." />
+                        <input type="submit" value="Search" />
+                    </p>
+                </form>
             </div>
-
             <div class="card-body table-responsive p-0">
                 <table class="table table-hover text-nowrap">
                     <thead>
@@ -49,3 +46,33 @@
         </div>
     </div>
 </div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#userName").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '/admin/User/AutoComplete/',
+                        data: { "prefix": request.term },
+                        type: "POST",
+                        success: function (data) {
+                            response(data)
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                },
+                select: function (e, i) {
+                    //get selected value
+                    //$("#personNameValue").val(i.item.val);
+                },
+                minLength: 1
+            });
+        });
+    </script>
+    }

@@ -5,7 +5,7 @@ namespace HotelBooking.Core.Contracts
 {
     public interface IUserService
     {
-        Task<IEnumerable<UserListViewModel>> GetUsers();
+        Task<IEnumerable<UserListViewModel>> GetUsers(string searchString = null);
 
         Task<UserEditViewModel> GetUserForEdit(string userId);
 
