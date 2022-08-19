@@ -4,7 +4,7 @@ using static HotelBooking.Infrastructure.Data.DataConstants;
 
 namespace HotelBooking.Core.Models.Hotels
 {
-    public class AddHotelViewModel
+    public class HotelEditViewModel
     {
         public int Id { get; set; }
 
