@@ -15,9 +15,5 @@ namespace HotelBooking.Core.Contracts
         bool AddHotel(AddHotelViewModel hotel);
 
         HotelViewModel GetHotel(int id);
-
-        IEnumerable<HotelListViewModel> GetAllHotelsForManage(string searchString = null);
-
-        HotelEditViewModel GetHotelForEdit(int id);
     }
 }

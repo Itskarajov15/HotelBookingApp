@@ -6,8 +6,6 @@ namespace HotelBooking.Core.Models.Hotels
 {
     public class AddHotelViewModel
     {
-        public int Id { get; set; }
-
         [Display(Name = "Hotel Name")]
         [Required]
         [StringLength(HotelNameMaxLength, MinimumLength = HotelNameMinLength, ErrorMessage = "{0} must be between {2} and {1} characters")]
