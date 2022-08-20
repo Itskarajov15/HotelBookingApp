@@ -24,11 +24,6 @@ namespace HotelBooking.Core
             this.CreateMap<City, HotelCityViewModel>()
                 .ForMember(c => c.Name, cfg => cfg.MapFrom(x => x.CityName));
 
-            this.CreateMap<Hotel, HotelListViewModel>();
-
-            this.CreateMap<Hotel, HotelEditViewModel>()
-                .ForMember(h => h.FirstAdditionalImageUrl, cfg => cfg.MapFrom(x => x.HotelImages[0]));
-
             //Rooms
             this.CreateMap<RoomType, RoomTypeViewModel>();
 

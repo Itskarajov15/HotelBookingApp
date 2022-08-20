@@ -1,11 +1,6 @@
-﻿using AspNetCoreHero.ToastNotification.Notyf;
-using HotelBooking.Core.Contracts;
+﻿using HotelBooking.Core.Contracts;
 using HotelBooking.Core.Models.Hotels;
-using HotelBooking.Core.Models.Users;
-using HotelBooking.Core.Services;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HotelBooking.Areas.Admin.Controllers
 {
@@ -18,20 +13,9 @@ namespace HotelBooking.Areas.Admin.Controllers
             this.hotelService = hotelService;
         }
 
-        public IActionResult ManageHotels(string searchString)
+        public IActionResult ManageHotels()
         {
-            IEnumerable<HotelListViewModel> hotels;
-
-            if (searchString == null)
-            {
-                hotels = hotelService.GetAllHotelsForManage();
-            }
-            else
-            {
-                hotels = hotelService.GetAllHotelsForManage(searchString);
-            }
-
-            return View(hotels);
+            return Ok();
         }
 
         public IActionResult Add() => this.View(new AddHotelViewModel
@@ -62,55 +46,5 @@ namespace HotelBooking.Areas.Admin.Controllers
 
             return RedirectToAction("ManageHotels", "Hotels");
         }
-
-        [HttpPost]
-        public JsonResult AutoComplete(string prefix)
-        {
-            var hotels = this.hotelService.GetAllHotels()
-                             .Where(h => h.HotelName.ToLower().StartsWith(prefix.ToLower()))
-                             .Select(h => new
-                             {
-                                 label = h.HotelName,
-                                 val = h.HotelName
-                             })
-                             .ToList();
-            return Json(hotels);
-        }
-
-        public IActionResult Edit(int id)
-        {
-            var model = hotelService.GetHotelForEdit(id);
-
-            ViewBag.Cities = hotelService.GetCityNames()
-                                   .Select(c => new SelectListItem()
-                                   {
-                                       Text = c.Name,
-                                       Value = c.Name,
-                                       Selected = c.Id == model.CityId
-                                   })
-                                   .ToList();
-
-            return View(model);
-        }
-
-        //[HttpPost]
-        //public async Task<IActionResult> Edit(string id, UserEditViewModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return this.View(model);
-        //    }
-
-        //    if (await userService.UpdateUser(model))
-        //    {
-        //        notyfService.Success("User is edited successfully!");
-        //    }
-        //    else
-        //    {
-        //        notyfService.Error("There is a problem with the edit");
-        //    }
-
-        //    return View(model);
-        //}
     }
 }

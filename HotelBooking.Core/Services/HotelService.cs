@@ -79,36 +79,5 @@ namespace HotelBooking.Core.Services
                    .Where(h => h.HotelName.ToLower().Contains(searchString.ToLower()))
                    .ProjectTo<HotelCardViewModel>(this.mapper.ConfigurationProvider)
                    .ToList();
-
-        public HotelEditViewModel GetHotelForEdit(int id)
-            => this.context
-                   .Hotels
-                   .ProjectTo<HotelEditViewModel>(this.mapper.ConfigurationProvider)
-                   .FirstOrDefault(h => h.Id == id);
-
-        public IEnumerable<HotelListViewModel> GetAllHotelsForManage(string searchString = null)
-        {
-            IEnumerable<HotelListViewModel> hotels;
-
-            if (searchString == null)
-            {
-                hotels = this.context
-                             .Hotels
-                             .ProjectTo<HotelListViewModel>(this.mapper.ConfigurationProvider)
-                             .ToList();
-            }
-            else
-            {
-                hotels = this.context
-                             .Hotels
-                             .Where(h => h.HotelName.ToLower().Contains(searchString.ToLower()))
-                             .ProjectTo<HotelListViewModel>(this.mapper.ConfigurationProvider)
-                             .ToList();
-            }
-
-            string name = null;
-
-            return hotels;
-        }
     }
 }
