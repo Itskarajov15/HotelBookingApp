@@ -7,10 +7,13 @@ namespace HotelBooking.Areas.Admin.Controllers
     public class HotelsController : BaseController
     {
         private readonly IHotelService hotelService;
+        private readonly ICityService cityService;
 
-        public HotelsController(IHotelService hotelService)
+        public HotelsController(IHotelService hotelService,
+            ICityService cityService)
         {
             this.hotelService = hotelService;
+            this.cityService = cityService;
         }
 
         public IActionResult ManageHotels()
@@ -20,20 +23,20 @@ namespace HotelBooking.Areas.Admin.Controllers
 
         public IActionResult Add() => this.View(new AddHotelViewModel
         {
-            Cities = this.hotelService.GetCityNames()
+            Cities = this.cityService.GetCityNames()
         });
 
         [HttpPost]
         public IActionResult Add(AddHotelViewModel hotel)
         {
-            if (!this.hotelService.IsCityValid(hotel.CityId))
+            if (!this.cityService.IsCityValid(hotel.CityId))
             {
                 ModelState.AddModelError(nameof(hotel.CityId), "City does not exist");
             }
 
             if (!ModelState.IsValid)
             {
-                hotel.Cities = this.hotelService.GetCityNames();
+                hotel.Cities = this.cityService.GetCityNames();
                 return this.View(hotel);
             }
 

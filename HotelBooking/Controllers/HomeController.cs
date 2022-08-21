@@ -9,22 +9,19 @@ namespace HotelBooking.Controllers
 {
     public class HomeController : BaseController
     {
-        private readonly IHotelService hotelService;
         private readonly IService service;
-        private readonly IReservationService reservationService;
+        private readonly ICityService cityService;
 
-        public HomeController(IHotelService hotelService,
-            IService service,
-            IReservationService reservationService)
+        public HomeController(IService service,
+            ICityService cityService)
         {
-            this.hotelService = hotelService;
             this.service = service;
-            this.reservationService = reservationService;
+            this.cityService = cityService;
         }
 
         public IActionResult Index() => this.View(new FilterRoomsViewModel
         {
-            Cities = this.hotelService.GetCityNames()
+            Cities = this.cityService.GetCityNames()
         });
 
         [HttpPost]

@@ -64,15 +64,6 @@ namespace HotelBooking.Core.Services
                         .ProjectTo<HotelCardViewModel>(this.mapper.ConfigurationProvider)
                         .ToList();
 
-        public IEnumerable<HotelCityViewModel> GetCityNames()
-            => this.context
-                   .Cities
-                   .ProjectTo<HotelCityViewModel>(this.mapper.ConfigurationProvider)
-                   .ToList();
-
-        public bool IsCityValid(int cityId)
-            => this.context.Cities.Any(c => c.Id == cityId) ? true : false;
-
         public IEnumerable<HotelCardViewModel> GetHotelsBySearchString(string searchString)
             => this.context
                    .Hotels
