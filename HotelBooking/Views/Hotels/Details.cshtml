@@ -68,8 +68,8 @@
                     <div class="card mb-3 room-card">
                         <img src="@room.RoomImageUrl" class="card-img-top" alt="Room image">
                         <div class="card-body">
-                            <h5 class="card-title">@room.RoomType room</h5>
-                            <p class="card-text">@room.RoomDescription</p>
+                            <h5 class="card-title">@room.RoomTypeName room</h5>
+                            <p class="card-text">@room.Description</p>
                             <a asp-controller="Rooms" asp-action="Details" asp-route-id="@room.Id" button type="button" class="btn btn-primary btn-lg btn-block d-block">View Room</a>
                         </div>
 

@@ -50,11 +50,11 @@ namespace HotelBooking.Controllers
         public JsonResult AutoComplete(string prefix)
         {
             var hotels = this.hotelService.GetAllHotels()
-                             .Where(h => h.HotelName.ToLower().StartsWith(prefix.ToLower()))
+                             .Where(h => h.Name.ToLower().StartsWith(prefix.ToLower()))
                              .Select(h => new
                              {
-                                 label = h.HotelName,
-                                 val = h.HotelName
+                                 label = h.Name,
+                                 val = h.Name
                              })
                              .ToList();
 
