@@ -10,7 +10,7 @@ namespace HotelBooking.Infrastructure.Data.Models
 
         [Required]
         [MaxLength(RoomTypeMaxLength)]
-        public string TypeName { get; set; }
+        public string Name { get; set; }
 
         [Required]
         [MaxLength(RoomTypeDescriptionMaxLength)]

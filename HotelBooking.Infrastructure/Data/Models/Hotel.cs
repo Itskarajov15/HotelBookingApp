@@ -16,7 +16,7 @@ namespace HotelBooking.Infrastructure.Data.Models
 
         [Required]
         [MaxLength(HotelNameMaxLength)]
-        public string HotelName { get; set; }
+        public string Name { get; set; }
 
         [Required]
         public string Description { get; set; }

@@ -79,7 +79,7 @@ namespace HotelBooking.Controllers
 
             if (!isReserved)
             {
-                var roomType = this.roomService.GetRoom(id).TypeName;
+                var roomType = this.roomService.GetRoom(id).RoomTypeName;
                 ModelState.AddModelError(String.Empty, $"All {roomType} are reserved for this period of time.");
                 return this.View();
             }

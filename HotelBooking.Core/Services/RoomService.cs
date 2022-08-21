@@ -62,14 +62,14 @@ namespace HotelBooking.Core.Services
             => this.context
                 .Rooms
                 .Where(r => r.Id == roomId)
-                .Select(r => r.RoomType.TypeName)
+                .Select(r => r.RoomType.Name)
                 .FirstOrDefault();
 
         private Room GetFreeRoom(DateTime startDate, DateTime endDate, string typeName, int hotelId)
         {
             var takenRoomIds = this.context
                              .Reservations
-                             .Where(r => r.Room.RoomType.TypeName == typeName)
+                             .Where(r => r.Room.RoomType.Name == typeName)
                              .Where(r => r.Room.HotelId == hotelId)
                              .Where(r => (startDate >= r.StartDate && startDate < r.EndDate) || (endDate >= r.StartDate && endDate <= r.EndDate))
                              .Select(r => r.RoomId)
@@ -78,7 +78,7 @@ namespace HotelBooking.Core.Services
             var freeRoom = this.context
                             .Rooms
                             .Where(r => !takenRoomIds.Contains(r.Id)
-                            && r.RoomType.TypeName == typeName
+                            && r.RoomType.Name == typeName
                             && r.HotelId == hotelId)
                             .FirstOrDefault();
 
@@ -115,7 +115,7 @@ namespace HotelBooking.Core.Services
                    .Where(r => r.HotelId == hotelId)
                    .ProjectTo<RoomCardViewModel>(this.mapper.ConfigurationProvider)
                    .ToList()
-                   .DistinctBy(r => r.RoomType)
+                   .DistinctBy(r => r.RoomTypeName)
                    .ToList();
 
         public int GetHotelIdByRoomId(int roomId)
@@ -141,7 +141,7 @@ namespace HotelBooking.Core.Services
             => room.RoomImages.Add(new RoomImage()
             {
                 RoomId = room.Id,
-                ImageUrl = imageUrl
+                Url = imageUrl
             });
     }
 }

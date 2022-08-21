@@ -15,7 +15,7 @@ namespace HotelBooking.Infrastructure.Data.Models
 
         [Required]
         [MaxLength(ContryNameMaxLength)]
-        public string CountryName { get; set; }
+        public string Name { get; set; }
 
         public ICollection<City> Cities { get; set; }
     }

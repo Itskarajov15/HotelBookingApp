@@ -12,7 +12,7 @@
 
         public string RoomType { get; set; }
 
-        public int ReservationId { get; set; }
+        public int Id { get; set; }
 
         public decimal TotalPrice { get; set; }
     }

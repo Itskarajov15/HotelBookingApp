@@ -4,9 +4,9 @@
     {
         public int Id { get; set; }
 
-        public string RoomType { get; set; }
+        public string RoomTypeName { get; set; }
 
-        public string RoomDescription { get; set; }
+        public string Description { get; set; }
 
         public string RoomImageUrl { get; set; }
     }

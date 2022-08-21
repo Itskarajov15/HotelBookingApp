@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
 
-        public string TypeName { get; set; }
+        public string RoomTypeName { get; set; }
 
         public List<string> RoomImageUrls { get; set; }
 

@@ -1,7 +1,7 @@
 ﻿@model HotelViewModel
 
 @{
-    ViewData["Title"] = Model.HotelName;
+    ViewData["Title"] = Model.Name;
 }
 
 <div class="container">
@@ -16,7 +16,7 @@
                 <img src="@Model.PrimaryImageUrl" class="d-block w-100" alt="Hotel image">
                 <div class="container">
                     <div class="carousel-caption text-start">
-                        <h1>@Model.HotelName</h1>
+                        <h1>@Model.Name</h1>
                     </div>
                 </div>
             </div>
@@ -46,6 +46,7 @@
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
             <h1 class="display-4 text-center">Description</h1>
+            <p class="lead">@Model.Name is a hotel in <b>@Model.CityName</b></p>
             <p class="lead">@Model.Description</p>
         </div>
     </div>

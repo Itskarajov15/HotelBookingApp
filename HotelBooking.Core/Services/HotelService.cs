@@ -28,12 +28,12 @@ namespace HotelBooking.Core.Services
 
             additionalImages.Add(new HotelImage()
             {
-                ImageUrl = hotel.FirstAdditionalImageUrl
+                Url = hotel.FirstAdditionalImageUrl
             });
 
             additionalImages.Add(new HotelImage()
             {
-                ImageUrl = hotel.SecondAdditionalImageUrl
+                Url = hotel.SecondAdditionalImageUrl
             });
 
             newHotel.HotelImages = additionalImages;
@@ -76,7 +76,7 @@ namespace HotelBooking.Core.Services
         public IEnumerable<HotelCardViewModel> GetHotelsBySearchString(string searchString)
             => this.context
                    .Hotels
-                   .Where(h => h.HotelName.ToLower().Contains(searchString.ToLower()))
+                   .Where(h => h.Name.ToLower().Contains(searchString.ToLower()))
                    .ProjectTo<HotelCardViewModel>(this.mapper.ConfigurationProvider)
                    .ToList();
     }
