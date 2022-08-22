@@ -27,7 +27,7 @@ namespace HotelBooking.Areas.Admin.Controllers
         });
 
         [HttpPost]
-        public IActionResult Add(AddHotelViewModel hotel)
+        public async Task<IActionResult> Add(AddHotelViewModel hotel)
         {
             if (!this.cityService.IsCityValid(hotel.CityId))
             {
@@ -40,7 +40,7 @@ namespace HotelBooking.Areas.Admin.Controllers
                 return this.View(hotel);
             }
 
-            var isAdded = this.hotelService.AddHotel(hotel);
+            var isAdded = await this.hotelService.AddHotel(hotel);
 
             if (!isAdded)
             {

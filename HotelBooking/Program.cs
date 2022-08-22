@@ -1,5 +1,6 @@
 using AspNetCoreHero.ToastNotification;
 using AspNetCoreHero.ToastNotification.Extensions;
+using CloudinaryDotNet;
 using HotelBooking.Core.Contracts;
 using HotelBooking.Core.Services;
 using HotelBooking.Infrastructure.Data;
@@ -19,6 +20,8 @@ builder.Services.AddDefaultIdentity<User>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+builder.Services.AddSingleton(new Cloudinary(builder.Configuration["CloudinaryString"]));
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllersWithViews();
@@ -29,6 +32,7 @@ builder.Services.AddScoped<IService, Service>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<ICityService, CityService>();
+builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
 
 builder.Services.AddNotyf(config =>
 {

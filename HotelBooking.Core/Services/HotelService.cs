@@ -11,14 +11,18 @@ namespace HotelBooking.Core.Services
     {
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
+        private readonly ICloudinaryService cloudinaryService;
 
-        public HotelService(ApplicationDbContext context, IMapper mapper)
+        public HotelService(ApplicationDbContext context,
+            IMapper mapper,
+            ICloudinaryService cloudinaryService)
         {
             this.context = context;
             this.mapper = mapper;
+            this.cloudinaryService = cloudinaryService;
         }
 
-        public bool AddHotel(AddHotelViewModel hotel)
+        public async Task<bool> AddHotel(AddHotelViewModel hotel)
         {
             bool isAdded = false;
 
@@ -26,20 +30,23 @@ namespace HotelBooking.Core.Services
 
             var additionalImages = new List<HotelImage>();
 
-            additionalImages.Add(new HotelImage()
-            {
-                Url = hotel.FirstAdditionalImageUrl
-            });
-
-            additionalImages.Add(new HotelImage()
-            {
-                Url = hotel.SecondAdditionalImageUrl
-            });
-
-            newHotel.HotelImages = additionalImages;
-
             try
             {
+                var firstAdditionalImageUrl = await this.cloudinaryService.UploadPicture(hotel.FirstAdditionalImageUrl);
+                var secondAdditionalImageUrl = await this.cloudinaryService.UploadPicture(hotel.SecondAdditionalImageUrl);
+
+                additionalImages.Add(new HotelImage()
+                {
+                    Url = firstAdditionalImageUrl
+                });
+
+                additionalImages.Add(new HotelImage()
+                {
+                    Url = secondAdditionalImageUrl
+                });
+
+                newHotel.HotelImages = additionalImages;
+
                 this.context.Hotels.Add(newHotel);
                 this.context.SaveChanges();
                 isAdded = true;

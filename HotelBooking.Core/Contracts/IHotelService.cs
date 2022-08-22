@@ -8,7 +8,7 @@ namespace HotelBooking.Core.Contracts
 
         IEnumerable<HotelCardViewModel> GetHotelsBySearchString(string searchString);
 
-        bool AddHotel(AddHotelViewModel hotel);
+        Task<bool> AddHotel(AddHotelViewModel hotel);
 
         HotelViewModel GetHotel(int id);
     }
