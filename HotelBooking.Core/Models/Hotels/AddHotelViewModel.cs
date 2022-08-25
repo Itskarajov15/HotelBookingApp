@@ -9,7 +9,7 @@ namespace HotelBooking.Core.Models.Hotels
         [Display(Name = "Hotel Name")]
         [Required]
         [StringLength(HotelNameMaxLength, MinimumLength = HotelNameMinLength, ErrorMessage = "{0} must be between {2} and {1} characters")]
-        public string HotelName { get; set; }
+        public string Name { get; set; }
 
         [Required]
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength, ErrorMessage = "{0} must be between {2} and {1} characters")]
