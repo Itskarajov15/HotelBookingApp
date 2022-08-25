@@ -9,7 +9,8 @@ namespace HotelBooking.Core.Services
             if (endDate.Date < startDate.Date
                 || startDate.Date < DateTime.UtcNow.Date
                 || startDate.Year > DateTime.UtcNow.Year
-                || endDate.Year > DateTime.UtcNow.Year)
+                || endDate.Year > DateTime.UtcNow.Year
+                || startDate == endDate)
             {
                 return false;
             }

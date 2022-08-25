@@ -3,6 +3,7 @@ using HotelBooking.Core.Models.Rooms;
 using HotelBooking.Core.Services;
 using HotelBooking.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace HotelBooking.Controllers
@@ -11,12 +12,15 @@ namespace HotelBooking.Controllers
     {
         private readonly IService service;
         private readonly ICityService cityService;
+        private readonly IReservationService reservationService;
 
         public HomeController(IService service,
-            ICityService cityService)
+            ICityService cityService,
+            IReservationService reservationService)
         {
             this.service = service;
             this.cityService = cityService;
+            this.reservationService = reservationService;
         }
 
         public IActionResult Index() => this.View(new FilterRoomsViewModel
@@ -24,21 +28,43 @@ namespace HotelBooking.Controllers
             Cities = this.cityService.GetCityNames()
         });
 
+        //[HttpPost]
+        //public IActionResult Index(FilterRoomsViewModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return this.View();
+        //    }
+
+        //    if (!service.ValidateDates(model.StartDate, model.EndDate))
+        //    {
+        //        ModelState.AddModelError(String.Empty, "Invalid dates");
+        //        return this.View();
+        //    }
+
+        //    var result = this.reservationService.GetFreeRooms(model);
+
+        //    return Ok(result);
+        //}
+
         [HttpPost]
-        public IActionResult Index(FilterRoomsViewModel model)
+        public IActionResult GetFreeRooms([FromBody]FilterRoomsViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || !service.ValidateDates(model.StartDate, model.EndDate))
             {
-                return this.View();
+                if (!service.ValidateDates(model.StartDate, model.EndDate))
+                {
+                    ModelState.AddModelError(String.Empty, "Invalid dates");
+                }
+
+                var errors = ModelState.Values.SelectMany(x => x.Errors);
+
+                return Json(errors);
             }
 
-            if (!service.ValidateDates(model.StartDate, model.EndDate))
-            {
-                ModelState.AddModelError(String.Empty, "Invalid dates");
-                return this.View();
-            }
+            var result = this.reservationService.GetFreeRooms(model);
 
-            return Ok(model);
+            return Json(result);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

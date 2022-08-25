@@ -14,13 +14,13 @@
         <h3 class="card-title">Date picker</h3>
     </div>
 
-    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+    <ul class="text-danger" id="errorDiv"></ul>
 
-    <form method="post">
+    <form method="post" id="form">
         <div class="card-body">
             <div class="reservation">
                 <label asp-for="CityId" style="margin-bottom: 8px"></label>
-                <select asp-for="CityId" class="form-control" style="height: 40px; width: 180px">
+                <select asp-for="CityId" id="cityId" class="form-control" style="height: 40px; width: 180px">
                     @foreach (var city in Model.Cities)
                     {
                         <option value="@city.Id">@city.Name</option>
@@ -29,20 +29,27 @@
             </div>
             <div class="reservation">
                 <label asp-for="StartDate" class="form-label"></label>
-                <input asp-for="StartDate" type="date" class="form-control" style="height: 40px; width: 180px">
+                <input asp-for="StartDate" type="date" class="form-control" id="startDate" style="height: 40px; width: 180px">
                 <span asp-validation-for="StartDate" class="small text-danger"></span>
             </div>
             <div class="reservation">
                 <label asp-for="EndDate" class="form-label"></label>
-                <input asp-for="EndDate" class="form-control" style="height: 40px; width: 180px">
+                <input asp-for="EndDate" type="date" id="endDate" class="form-control" style="height: 40px; width: 180px">
                 <span asp-validation-for="EndDate" class="small text-danger"></span>
             </div>
             <div class="reservation">
                 <label asp-for="CountOfPeople" class="form-label"></label>
-                <input asp-for="CountOfPeople" type="number" class="form-control" style="height: 40px; width: 180px">
+                <input asp-for="CountOfPeople" type="number" id="peopleCount" class="form-control" style="height: 40px; width: 180px">
                 <span asp-validation-for="CountOfPeople" class="small text-danger"></span>
             </div>
-            <input class="btn btn-primary searchButton" type="submit" value="Search" />
+            <input class="btn btn-primary searchButton" id="searchButton" type="submit" value="Search" />
         </div>
     </form>
 </div>
+
+<div class="row" id="roomsDiv"></div>
+
+@section Scripts
+{
+    <script src="~/js/extractFreeRooms.js"></script>
+}

@@ -1,4 +1,5 @@
-﻿using HotelBooking.Core.Models.Users;
+﻿using HotelBooking.Core.Models.Rooms;
+using HotelBooking.Core.Models.Users;
 
 namespace HotelBooking.Core.Contracts
 {
@@ -7,5 +8,7 @@ namespace HotelBooking.Core.Contracts
         List<UserReservationViewModel> GetReservationsByUserId(string userId);
 
         bool DeclineReservation(int reservationId);
+
+        List<RoomCardViewModel> GetFreeRooms(FilterRoomsViewModel model);
     }
 }
