@@ -30,20 +30,19 @@ namespace HotelBooking.Core.Services
 
             var additionalImages = new List<HotelImage>();
 
+            var urls = new List<string>();
+
             try
             {
-                var firstAdditionalImageUrl = await this.cloudinaryService.UploadPicture(hotel.FirstAdditionalImageUrl);
-                var secondAdditionalImageUrl = await this.cloudinaryService.UploadPicture(hotel.SecondAdditionalImageUrl);
+                urls = await this.cloudinaryService.UploadPictures(hotel.Files);
 
-                additionalImages.Add(new HotelImage()
+                foreach (var url in urls)
                 {
-                    Url = firstAdditionalImageUrl
-                });
-
-                additionalImages.Add(new HotelImage()
-                {
-                    Url = secondAdditionalImageUrl
-                });
+                    additionalImages.Add(new HotelImage()
+                    {
+                        Url = url
+                    });
+                }
 
                 newHotel.HotelImages = additionalImages;
 

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 using static HotelBooking.Infrastructure.Data.DataConstants;
 
@@ -15,20 +16,8 @@ namespace HotelBooking.Core.Models.Hotels
         [StringLength(DescriptionMaxLength, MinimumLength = DescriptionMinLength, ErrorMessage = "{0} must be between {2} and {1} characters")]
         public string Description { get; set; }
 
-        [Display(Name = "Primary Hotel Image")]
-        [Required]
-        [Url]
-        public string PrimaryImageUrl { get; set; }
-
-        [Display(Name = "First Additional Hotel Image")]
-        [Required]
-        [Url]
-        public string FirstAdditionalImageUrl { get; set; }
-
-        [Display(Name = "Second Additional Hotel Image")]
-        [Required]
-        [Url]
-        public string SecondAdditionalImageUrl { get; set; }
+        [Required(ErrorMessage = "Please select files")]
+        public List<IFormFile> Files { get; set; }
 
         [Display(Name = "City")]
         public int CityId { get; set; }

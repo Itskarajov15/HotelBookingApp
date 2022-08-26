@@ -1,7 +1,9 @@
-﻿namespace HotelBooking.Core.Contracts
+﻿using Microsoft.AspNetCore.Http;
+
+namespace HotelBooking.Core.Contracts
 {
     public interface ICloudinaryService
     {
-        Task<string> UploadPicture(string imageUrl);
+        Task<List<string>> UploadPictures(List<IFormFile> imageBlob);
     }
 }

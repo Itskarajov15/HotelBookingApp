@@ -1,6 +1,7 @@
 ﻿using CloudinaryDotNet.Actions;
 using CloudinaryDotNet;
 using HotelBooking.Core.Contracts;
+using Microsoft.AspNetCore.Http;
 
 namespace HotelBooking.Core.Services
 {
@@ -13,21 +14,28 @@ namespace HotelBooking.Core.Services
             this.cloudinary = cloudinary;
         }
 
-        public async Task<string> UploadPicture(string imageUrl)
+        public async Task<List<string>> UploadPictures(List<IFormFile> imageBlob)
         {
-            var uploadParams = new ImageUploadParams()
+            var urls = new List<string>();
+
+            foreach (var item in imageBlob)
             {
-                File = new FileDescription(imageUrl),
-                UseFilename = true,
-                UniqueFilename = false,
-                Overwrite = true
-            };
+                var uploadParams = new ImageUploadParams()
+                {
+                    File = new FileDescription(item.FileName, item.OpenReadStream()),
+                    UseFilename = true,
+                    UniqueFilename = false,
+                    Overwrite = true
+                };
 
-            var uploadResult = await cloudinary.UploadAsync(uploadParams);
-            string publicId = uploadResult.JsonObj["public_id"].ToString();
-            var uploadedImageUrl = await cloudinary.GetResourceAsync(publicId);
+                var uploadResult = await cloudinary.UploadAsync(uploadParams);
+                string publicId = uploadResult.JsonObj["public_id"].ToString();
+                var uploadedImageUrl = await cloudinary.GetResourceAsync(publicId);
 
-            return uploadedImageUrl.Url;
+                urls.Add(uploadedImageUrl.Url);
+            }
+
+            return urls;
         }
     }
 }
