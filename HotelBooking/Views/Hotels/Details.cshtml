@@ -20,16 +20,16 @@
                     </div>
                 </div>
             </div>
-            <div class="carousel-item">
-                <div class="container">
-                    <img src="@Model.HotelImages[0]" class="d-block w-100" alt="Hotel image">
-                </div>
-            </div>
-            <div class="carousel-item">
-                <div class="container">
-                    <img src="@Model.HotelImages[1]" class="d-block w-100" alt="Hotel image">
-                </div>
-            </div>
+            @{
+                foreach (var item in Model.HotelImages)
+                {
+                    <div class="carousel-item">
+                        <div class="container">
+                            <img src="@item" class="d-block w-100" alt="Hotel image">
+                        </div>
+                    </div>
+                }
+            }
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>

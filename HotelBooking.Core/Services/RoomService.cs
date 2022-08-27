@@ -12,11 +12,13 @@ namespace HotelBooking.Core.Services
     {
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
+        private readonly ICloudinaryService cloudinaryService;
 
-        public RoomService(ApplicationDbContext context, IMapper mapper)
+        public RoomService(ApplicationDbContext context, IMapper mapper, ICloudinaryService cloudinaryService)
         {
             this.context = context;
             this.mapper = mapper;
+            this.cloudinaryService = cloudinaryService;
         }
 
         public bool ReserveRoom(ReserveRoomViewModel model, string userId, int roomId)
@@ -85,15 +87,19 @@ namespace HotelBooking.Core.Services
             return freeRoom;
         }
 
-        public bool AddRoom(AddRoomViewModel room)
+        public async Task<bool> AddRoom(AddRoomViewModel room)
         {
             bool isAdded = false;
 
             var newRoom = mapper.Map<Room>(room);
 
-            AddImageToRoom(newRoom, room.FirstRoomImageUrl);
-            AddImageToRoom(newRoom, room.SecondRoomImageUrl);
-            AddImageToRoom(newRoom, room.ThirdRoomImageUrl);
+            foreach (var image in room.Images)
+            {
+                newRoom.RoomImages.Add(new RoomImage()
+                {
+                    Url = await this.cloudinaryService.UploadPicture(image)
+                });
+            }
 
             try
             {
@@ -136,12 +142,5 @@ namespace HotelBooking.Core.Services
                    .RoomTypes
                    .ProjectTo<RoomTypeViewModel>(this.mapper.ConfigurationProvider)
                    .ToList();
-
-        private void AddImageToRoom(Room room, string imageUrl)
-            => room.RoomImages.Add(new RoomImage()
-            {
-                RoomId = room.Id,
-                Url = imageUrl
-            });
     }
 }

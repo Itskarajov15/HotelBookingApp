@@ -47,7 +47,7 @@ namespace HotelBooking.Areas.Admin.Controllers
                 return this.View(hotel);
             }
 
-            return RedirectToAction("All", "Hotels");
+            return RedirectToAction("ManageHotels", "Hotels");
         }
     }
 }

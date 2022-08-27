@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace HotelBooking.Core.Models.Rooms
 {
@@ -11,20 +12,9 @@ namespace HotelBooking.Core.Models.Rooms
         [Range(0, 1000, ErrorMessage = "{0} must be between {1} and {2} leva")]
         public decimal PriceForOneNight { get; set; }
 
-        [Display(Name = "First Room Image")]
-        [Required]
-        [Url]
-        public string FirstRoomImageUrl { get; set; }
-
-        [Display(Name = "Second Room Image")]
-        [Required]
-        [Url]
-        public string SecondRoomImageUrl { get; set; }
-
-        [Display(Name = "Third Room Image")]
-        [Required]
-        [Url]
-        public string ThirdRoomImageUrl { get; set; }
+        [Required(ErrorMessage = "Please select files")]
+        [Display(Name = "Room Images")]
+        public List<IFormFile> Images { get; set; }
 
         public int RoomTypeId { get; set; }
 

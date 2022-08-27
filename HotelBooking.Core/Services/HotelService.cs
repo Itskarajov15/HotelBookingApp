@@ -28,23 +28,17 @@ namespace HotelBooking.Core.Services
 
             var newHotel = mapper.Map<Hotel>(hotel);
 
-            var additionalImages = new List<HotelImage>();
-
-            var urls = new List<string>();
-
             try
             {
-                urls = await this.cloudinaryService.UploadPictures(hotel.Files);
+                newHotel.PrimaryImageUrl = await this.cloudinaryService.UploadPicture(hotel.PrimaryImage);
 
-                foreach (var url in urls)
+                foreach (var picture in hotel.AdditionalImages)
                 {
-                    additionalImages.Add(new HotelImage()
+                    newHotel.HotelImages.Add(new HotelImage()
                     {
-                        Url = url
+                        Url = await this.cloudinaryService.UploadPicture(picture)
                     });
                 }
-
-                newHotel.HotelImages = additionalImages;
 
                 this.context.Hotels.Add(newHotel);
                 this.context.SaveChanges();

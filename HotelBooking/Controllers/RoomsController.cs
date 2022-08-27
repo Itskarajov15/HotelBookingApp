@@ -22,7 +22,7 @@ namespace HotelBooking.Controllers
         });
 
         [HttpPost]
-        public IActionResult Add(int id, AddRoomViewModel roomModel)
+        public async Task<IActionResult> Add(int id, AddRoomViewModel roomModel)
         {
             if (!ModelState.IsValid)
             {
@@ -32,7 +32,7 @@ namespace HotelBooking.Controllers
 
             roomModel.HotelId = id;
 
-            var isAdded = this.roomService.AddRoom(roomModel);
+            var isAdded = await this.roomService.AddRoom(roomModel);
 
             if (!isAdded)
             {

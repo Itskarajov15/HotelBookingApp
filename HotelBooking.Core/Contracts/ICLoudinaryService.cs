@@ -4,6 +4,6 @@ namespace HotelBooking.Core.Contracts
 {
     public interface ICloudinaryService
     {
-        Task<List<string>> UploadPictures(List<IFormFile> imageBlob);
+        Task<string> UploadPicture(IFormFile picture);
     }
 }
