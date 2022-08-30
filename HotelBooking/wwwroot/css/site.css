@@ -66,3 +66,8 @@ body {
     margin-top: 40px;
     margin-bottom: 40px;
 }
+
+.adminHotelImage {
+    width: 180px;
+    height: 90px;
+}

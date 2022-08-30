@@ -1,5 +1,7 @@
 ﻿using HotelBooking.Core.Contracts;
 using HotelBooking.Core.Models.Hotels;
+using HotelBooking.Core.Models.Users;
+using HotelBooking.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelBooking.Areas.Admin.Controllers
@@ -16,9 +18,26 @@ namespace HotelBooking.Areas.Admin.Controllers
             this.cityService = cityService;
         }
 
-        public IActionResult ManageHotels()
+        public IActionResult ManageHotels(string searchString)
         {
-            return Ok();
+            var hotels = this.hotelService.GetHotelsForManaging(searchString);
+
+            return this.View(hotels);
+        }
+
+        [HttpPost]
+        public JsonResult AutoComplete(string prefix)
+        {
+            var hotels = this.hotelService.GetHotelsForManaging()
+                             .Where(u => u.Name.ToLower().StartsWith(prefix.ToLower()))
+                             .Select(u => new
+                             {
+                                 label = u.Name,
+                                 val = u.Name
+                             })
+                             .ToList();
+
+            return Json(hotels);
         }
 
         public IActionResult Add() => this.View(new AddHotelViewModel

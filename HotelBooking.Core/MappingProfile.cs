@@ -21,6 +21,8 @@ namespace HotelBooking.Core
 
             this.CreateMap<City, HotelCityViewModel>();
 
+            this.CreateMap<Hotel, AdminHotelViewModel>();
+
             //Rooms
             this.CreateMap<RoomType, RoomTypeViewModel>();
 
