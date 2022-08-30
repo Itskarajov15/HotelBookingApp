@@ -12,6 +12,8 @@
 
         public string HotelName { get; set; }
 
+        public int HotelId { get; set; }
+
         public decimal PriceForOneNight { get; set; }
     }
 }

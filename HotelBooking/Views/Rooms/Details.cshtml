@@ -13,18 +13,18 @@
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="@Model.RoomImageUrls[0]" class="d-block w-100" alt="Hotel image">
+                <img src="@Model.RoomImageUrls[0]" class="d-block w-100" alt="Room image">
                 <div class="container">
                 </div>
             </div>
             <div class="carousel-item">
                 <div class="container">
-                    <img src="@Model.RoomImageUrls[1]" class="d-block w-100" alt="Hotel image">
+                    <img src="@Model.RoomImageUrls[1]" class="d-block w-100" alt="Room image">
                 </div>
             </div>
             <div class="carousel-item">
                 <div class="container">
-                    <img src="@Model.RoomImageUrls[2]" class="d-block w-100" alt="Hotel image">
+                    <img src="@Model.RoomImageUrls[2]" class="d-block w-100" alt="Room image">
                 </div>
             </div>
         </div>
@@ -43,6 +43,7 @@
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
             <h1 class="display-4 text-center">Description</h1>
+            <p>This room is part of <a asp-controller="Hotels" asp-action="Details" asp-route-id="@Model.HotelId">@Model.HotelName</a></p>
             <p class="lead">@Model.Description</p>
             <p class="lead">The price for one night is <b>@Model.PriceForOneNight</b></p>
         </div>
