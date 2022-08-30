@@ -48,11 +48,13 @@ namespace HotelBooking.Core.Services
                                    .Reservations
                                    .Where(r => (model.StartDate >= r.StartDate && model.StartDate < r.EndDate) || (model.EndDate >= r.StartDate && model.EndDate <= r.EndDate))
                                    .Where(r => r.Room.RoomType.CountOfPeople == model.CountOfPeople)
+                                   .Where(r => r.Room.Hotel.City.Id == model.CityId)
                                    .Select(r => r.RoomId)
                                    .ToList();
 
             var freeRooms = this.context
                                 .Rooms
+                                .Where(r => r.Hotel.CityId == model.CityId)
                                 .Where(r => r.RoomType.CountOfPeople == model.CountOfPeople)
                                 .Where(r => !takenRoomIds.Contains(r.Id))
                                 .ProjectTo<RoomCardViewModel>(this.mapper.ConfigurationProvider)

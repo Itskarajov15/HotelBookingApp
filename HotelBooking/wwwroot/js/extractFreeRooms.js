@@ -28,7 +28,13 @@
                 errorUl.innerHTML = '';
                 roomsDiv.innerHTML = '';
 
-                if (result[0].errorMessage != null) {
+                if (result.length <= 0) {
+                    let h3 = document.createElement('h3');
+                    h3.classList.add('h2');
+                    h3.textContent = 'There are no free rooms';
+                    roomsDiv.appendChild(h3);
+                }
+                else if (result[0].errorMessage != null) {
                     result.forEach(e => {
                         let li = document.createElement("li");
                         li.textContent = e.errorMessage;
