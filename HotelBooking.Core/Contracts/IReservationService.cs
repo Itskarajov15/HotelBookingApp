@@ -9,6 +9,8 @@ namespace HotelBooking.Core.Contracts
 
         bool DeclineReservation(int reservationId);
 
+        bool ReserveRoom(ReserveRoomViewModel model, string userId, int roomId);
+
         List<RoomCardViewModel> GetFreeRooms(FilterRoomsViewModel model);
     }
 }

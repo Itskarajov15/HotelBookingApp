@@ -65,6 +65,72 @@ namespace HotelBooking.Core.Services
             return freeRooms;
         }
 
+        public bool ReserveRoom(ReserveRoomViewModel model, string userId, int roomId)
+        {
+            var isReservationDone = false;
+            var roomType = GetRoomTypeByRoomId(roomId);
+            var hotelId = this.context
+                              .Rooms
+                              .FirstOrDefault(r => r.Id == roomId)
+                              .HotelId;
+
+            var freeRoom = GetFreeRoom(model.StartDate, model.EndDate, roomType, hotelId);
+
+            if (freeRoom == null)
+            {
+                return isReservationDone;
+            }
+
+            var reservation = new Reservation()
+            {
+                UserId = userId,
+                EndDate = model.EndDate,
+                RoomId = freeRoom.Id,
+                StartDate = model.StartDate,
+                TotalPrice = (decimal)((model.EndDate - model.StartDate).TotalDays) * freeRoom.PriceForOneNight
+            };
+
+            try
+            {
+                this.context.Reservations.Add(reservation);
+                this.context.SaveChanges();
+                isReservationDone = true;
+            }
+            catch (Exception)
+            {
+                isReservationDone = false;
+            }
+
+            return isReservationDone;
+        }
+
+        private string GetRoomTypeByRoomId(int roomId)
+            => this.context
+                .Rooms
+                .Where(r => r.Id == roomId)
+                .Select(r => r.RoomType.Name)
+                .FirstOrDefault();
+
+        private Room GetFreeRoom(DateTime startDate, DateTime endDate, string typeName, int hotelId)
+        {
+            var takenRoomIds = this.context
+                             .Reservations
+                             .Where(r => r.Room.RoomType.Name == typeName)
+                             .Where(r => r.Room.HotelId == hotelId)
+                             .Where(r => (startDate >= r.StartDate && startDate < r.EndDate) || (endDate >= r.StartDate && endDate <= r.EndDate))
+                             .Select(r => r.RoomId)
+                             .ToList();
+
+            var freeRoom = this.context
+                            .Rooms
+                            .Where(r => !takenRoomIds.Contains(r.Id)
+                            && r.RoomType.Name == typeName
+                            && r.HotelId == hotelId)
+                            .FirstOrDefault();
+
+            return freeRoom;
+        }
+
         public List<UserReservationViewModel> GetReservationsByUserId(string userId)
             => this.context
             .Reservations

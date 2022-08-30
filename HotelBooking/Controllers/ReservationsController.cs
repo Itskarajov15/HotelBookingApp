@@ -75,7 +75,7 @@ namespace HotelBooking.Controllers
                 return this.View();
             }
 
-            var isReserved = this.roomService.ReserveRoom(reserveRoom, this.userManager.GetUserId(User), id);
+            var isReserved = this.reservationService.ReserveRoom(reserveRoom, this.userManager.GetUserId(User), id);
 
             if (!isReserved)
             {
