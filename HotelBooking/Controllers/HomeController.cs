@@ -28,25 +28,6 @@ namespace HotelBooking.Controllers
             Cities = this.cityService.GetCityNames()
         });
 
-        //[HttpPost]
-        //public IActionResult Index(FilterRoomsViewModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return this.View();
-        //    }
-
-        //    if (!service.ValidateDates(model.StartDate, model.EndDate))
-        //    {
-        //        ModelState.AddModelError(String.Empty, "Invalid dates");
-        //        return this.View();
-        //    }
-
-        //    var result = this.reservationService.GetFreeRooms(model);
-
-        //    return Ok(result);
-        //}
-
         [HttpPost]
         public IActionResult GetFreeRooms([FromBody]FilterRoomsViewModel model)
         {
@@ -63,6 +44,9 @@ namespace HotelBooking.Controllers
             }
 
             var result = this.reservationService.GetFreeRooms(model);
+
+            TempData["StartDate"] = model.StartDate.ToString("yyyy-MM-dd");
+            TempData["EndDate"] = model.EndDate.ToString("yyyy-MM-dd");
 
             return Json(result);
         }
