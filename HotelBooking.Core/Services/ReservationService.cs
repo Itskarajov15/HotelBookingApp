@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using HotelBooking.Core.Contracts;
+using HotelBooking.Core.Models.Hotels;
 using HotelBooking.Core.Models.Rooms;
 using HotelBooking.Core.Models.Users;
 using HotelBooking.Infrastructure.Data;
@@ -42,27 +43,35 @@ namespace HotelBooking.Core.Services
             return isDeclined;
         }
 
-        public List<RoomCardViewModel> GetFreeRooms(FilterRoomsViewModel model)
-        {
-            var takenRoomIds = this.context
-                                   .Reservations
-                                   .Where(r => (model.StartDate >= r.StartDate && model.StartDate < r.EndDate) || (model.EndDate >= r.StartDate && model.EndDate <= r.EndDate))
-                                   .Where(r => r.Room.RoomType.CountOfPeople == model.CountOfPeople)
-                                   .Where(r => r.Room.Hotel.City.Id == model.CityId)
-                                   .Select(r => r.RoomId)
-                                   .ToList();
+        public IEnumerable<int> GetTakenRoomsIds(FilterRoomsViewModel model)
+            => this.context
+                   .Reservations
+                   .Where(r => (model.StartDate >= r.StartDate && model.StartDate < r.EndDate) || (model.EndDate >= r.StartDate && model.EndDate <= r.EndDate))
+                   .Where(r => r.Room.RoomType.CountOfPeople == model.CountOfPeople)
+                   .Where(r => r.Room.Hotel.City.Id == model.CityId)
+                   .Select(r => r.RoomId)
+                   .ToList();
 
-            var freeRooms = this.context
+        public List<HotelCardViewModel> GetHotelsWithFreeRooms(FilterRoomsViewModel model)
+        {
+            var takenRoomIds = GetTakenRoomsIds(model);
+
+            var freeRoomsIds = this.context
                                 .Rooms
                                 .Where(r => r.Hotel.CityId == model.CityId)
                                 .Where(r => r.RoomType.CountOfPeople == model.CountOfPeople)
                                 .Where(r => !takenRoomIds.Contains(r.Id))
-                                .ProjectTo<RoomCardViewModel>(this.mapper.ConfigurationProvider)
-                                .ToList()
-                                .DistinctBy(r => r.RoomTypeName)
+                                .Select(r => r.Id)
                                 .ToList();
 
-            return freeRooms;
+            var hotels = this.context
+                             .Hotels
+                             .Where(h => h.Rooms.Any(r => freeRoomsIds.Contains(r.Id) && h.CityId == model.CityId))
+                             .ProjectTo<HotelCardViewModel>(this.mapper.ConfigurationProvider)
+                             .ToList();
+                             
+
+            return hotels;
         }
 
         public bool ReserveRoom(ReserveRoomViewModel model, string userId, int roomId)

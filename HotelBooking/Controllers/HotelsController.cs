@@ -1,5 +1,6 @@
 ﻿using HotelBooking.Core.Contracts;
 using HotelBooking.Core.Models.Hotels;
+using HotelBooking.Core.Models.Rooms;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,7 +42,17 @@ namespace HotelBooking.Controllers
                 return RedirectToAction("All", "Hotels");
             }
 
-            this.ViewBag.Rooms = this.roomService.GetAllRoomsByHotel(id);
+            FilterRoomsViewModel filterModel = new FilterRoomsViewModel();
+
+            if (TempData["CityId"] != null)
+            {
+                filterModel.StartDate = DateTime.Parse(TempData["StartDate"].ToString());
+                filterModel.EndDate = DateTime.Parse(TempData["EndDate"].ToString());
+                filterModel.CountOfPeople = (int)TempData["CountOfPeople"];
+                filterModel.CityId = (int)TempData["CityId"];
+            }
+
+            this.ViewBag.Rooms = this.roomService.GetAllRoomsByHotel(id, filterModel);
 
             return this.View(hotel);
         }

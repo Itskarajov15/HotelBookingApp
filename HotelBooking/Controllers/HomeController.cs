@@ -29,7 +29,7 @@ namespace HotelBooking.Controllers
         });
 
         [HttpPost]
-        public IActionResult GetFreeRooms([FromBody]FilterRoomsViewModel model)
+        public IActionResult GetHotelsWithFreeRooms([FromBody]FilterRoomsViewModel model)
         {
             if (!ModelState.IsValid || !service.ValidateDates(model.StartDate, model.EndDate))
             {
@@ -43,10 +43,12 @@ namespace HotelBooking.Controllers
                 return Json(errors);
             }
 
-            var result = this.reservationService.GetFreeRooms(model);
+            var result = this.reservationService.GetHotelsWithFreeRooms(model);
 
             TempData["StartDate"] = model.StartDate.ToString("yyyy-MM-dd");
             TempData["EndDate"] = model.EndDate.ToString("yyyy-MM-dd");
+            TempData["CountOfPeople"] = model.CountOfPeople;
+            TempData["CityId"] = model.CityId;
 
             return Json(result);
         }

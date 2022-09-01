@@ -8,7 +8,7 @@ namespace HotelBooking.Core.Contracts
 
         IEnumerable<RoomTypeViewModel> GetRoomTypes();
 
-        IEnumerable<RoomCardViewModel> GetAllRoomsByHotel(int hotelId);
+        IEnumerable<RoomCardViewModel> GetAllRoomsByHotel(int hotelId, FilterRoomsViewModel filterModel = null);
 
         RoomViewModel GetRoom(int roomId);
 

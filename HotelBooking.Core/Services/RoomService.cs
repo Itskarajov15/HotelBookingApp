@@ -13,12 +13,17 @@ namespace HotelBooking.Core.Services
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
         private readonly ICloudinaryService cloudinaryService;
+        private readonly IReservationService reservationService;
 
-        public RoomService(ApplicationDbContext context, IMapper mapper, ICloudinaryService cloudinaryService)
+        public RoomService(ApplicationDbContext context,
+            IMapper mapper,
+            ICloudinaryService cloudinaryService,
+            IReservationService reservationService)
         {
             this.context = context;
             this.mapper = mapper;
             this.cloudinaryService = cloudinaryService;
+            this.reservationService = reservationService;
         }
 
         public async Task<bool> AddRoom(AddRoomViewModel room)
@@ -49,14 +54,37 @@ namespace HotelBooking.Core.Services
             return isAdded;
         }
 
-        public IEnumerable<RoomCardViewModel> GetAllRoomsByHotel(int hotelId)
-            => this.context
-                   .Rooms
-                   .Where(r => r.HotelId == hotelId)
-                   .ProjectTo<RoomCardViewModel>(this.mapper.ConfigurationProvider)
-                   .ToList()
-                   .DistinctBy(r => r.RoomTypeName)
-                   .ToList();
+        public IEnumerable<RoomCardViewModel> GetAllRoomsByHotel(int hotelId, FilterRoomsViewModel model)
+        {
+            var rooms = new List<RoomCardViewModel>();
+
+            if (model.CountOfPeople == 0)
+            {
+                rooms = this.context
+                            .Rooms
+                            .Where(r => r.HotelId == hotelId)
+                            .ProjectTo<RoomCardViewModel>(this.mapper.ConfigurationProvider)
+                            .ToList()
+                            .DistinctBy(r => r.RoomTypeName)
+                            .ToList();
+            }
+            else
+            {
+                var takenRoomsIds = this.reservationService.GetTakenRoomsIds(model);
+
+                rooms = this.context
+                            .Rooms
+                            .Where(r => r.HotelId == hotelId)
+                            .Where(r => r.RoomType.CountOfPeople == model.CountOfPeople)
+                            .Where(r => !takenRoomsIds.Contains(r.Id))
+                            .ProjectTo<RoomCardViewModel>(this.mapper.ConfigurationProvider)
+                            .ToList()
+                            .DistinctBy(r => r.RoomTypeName)
+                            .ToList();
+            }
+
+            return rooms;
+        }
 
         public int GetHotelIdByRoomId(int roomId)
             => this.context

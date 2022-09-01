@@ -18,7 +18,7 @@
             countOfPeople
         };
 
-        fetch("/Home/GetFreeRooms", {
+        fetch("/Home/GetHotelsWithFreeRooms", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(dataObj)
@@ -48,35 +48,28 @@
     }
 }
 
-const CreateRoomCard = function (room) {
+const CreateRoomCard = function (hotel) {
     let colDiv = document.createElement('div');
     colDiv.classList.add('col-3');
 
     let cardDiv = document.createElement('div');
     cardDiv.classList.add('card');
-    cardDiv.classList.add('mb-3');
-    cardDiv.classList.add('room-card');
 
     let imgEl = document.createElement('img');
-    imgEl.src = room.roomImageUrl;
+    imgEl.src = hotel.primaryImageUrl;
     imgEl.classList.add('card-img-top');
-    imgEl.alt = 'Room image';
-
-    console.log(room.RoomImageUrl);
+    imgEl.alt = 'Hotel image';
 
     let divCardBody = document.createElement('div');
     divCardBody.classList.add('card-body');
+    divCardBody.classList.add('text-center');
 
     let h5 = document.createElement('h5');
     h5.classList.add('card-title');
-    h5.textContent = room.roomTypeName;
-
-    let descriptionP = document.createElement('p');
-    descriptionP.classList.add('card-text');
-    descriptionP.textContent = room.description;
+    h5.textContent = hotel.name;
 
     let aTag = document.createElement('a');
-    let link = '/Rooms/Details/' + room.id;
+    let link = '/Hotels/Details/' + hotel.id;
     aTag.setAttribute('href', link);
     aTag.type = 'button';
     aTag.classList.add('btn');
@@ -84,10 +77,9 @@ const CreateRoomCard = function (room) {
     aTag.classList.add('btn-lg');
     aTag.classList.add('btn-block');
     aTag.classList.add('d-block');
-    aTag.textContent = 'View Room';
+    aTag.textContent = 'View Hotel';
 
     divCardBody.appendChild(h5);
-    divCardBody.appendChild(descriptionP);
     divCardBody.appendChild(aTag);
 
     cardDiv.appendChild(imgEl);
