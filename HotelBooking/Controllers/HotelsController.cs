@@ -23,11 +23,11 @@ namespace HotelBooking.Controllers
 
             if (String.IsNullOrWhiteSpace(searchString))
             {
-                hotels = hotelService.GetAllHotels();
+                hotels = hotelService.GetHotels();
             }
             else
             {
-                hotels = hotelService.GetHotelsBySearchString(searchString);
+                hotels = hotelService.GetHotels(searchString);
             }
 
             return this.View(hotels);
@@ -60,7 +60,7 @@ namespace HotelBooking.Controllers
         [HttpPost]
         public JsonResult AutoComplete(string prefix)
         {
-            var hotels = this.hotelService.GetAllHotels()
+            var hotels = this.hotelService.GetHotels()
                              .Where(h => h.Name.ToLower().StartsWith(prefix.ToLower()))
                              .Select(h => new
                              {
